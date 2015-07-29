@@ -1,0 +1,32 @@
+{
+    "events": [
+
+<repeat group="{{ @lists }}" value="{{ @item }}">
+        {
+            "ID": {{ @item.id }},
+            "name": {{ @item.name }},
+            "group_id": {{ @item.group_id }}
+            "crdate": {{ @item.crdate }},
+            "description": {{ @item.description }},
+            "min_attendants": {{ @item.min_att }},
+            "max_attendants": {{ @item.max_att }},
+            "location": {{ @item.location }},
+            "lists": [1,2,3],
+            "registrations": [
+                {
+                    "id": 1,
+                    "user": 2,
+                    "name": "Cecko",
+                    "time": 17678298627
+                },
+                {
+                    "id": 2,
+                    "user": 1,
+                    "name": "Michi",
+                    "time": 17678298627
+                }
+            ]
+        }
+</repeat>
+    ]
+}
