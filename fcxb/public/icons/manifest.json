@@ -1,0 +1,24 @@
+{
+    "short_name": "FCXB Doodle",
+    "name": "Football Doodle for Kreuzberg Teams",
+    "icons": [
+        {
+            "src": "/icons/icon96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/icon144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/icon192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/?homescreen=true",
+    "display": "standalone",
+    "orientation": "portrait"
+}

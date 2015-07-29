@@ -1,0 +1,42 @@
+import DS from 'ember-data';
+
+export default DS.Model.extend({
+    name: DS.attr('string'),
+    evdate: DS.attr('number'),
+    evdate_str: DS.attr('string'),
+    evdate_dif: DS.attr('string'),
+    description: DS.attr('string'),
+    canceled: DS.attr('number'),
+    min_att: DS.attr('number'),
+    max_att: DS.attr('number'),
+    location: DS.attr('string'),
+    lists: DS.hasMany('list', {async: true}),
+    registrations: DS.hasMany('registrations', {async: false}),
+    weekday: DS.attr('string'),
+    hour: DS.attr('string'),
+    weather: DS.attr('string'),
+    weather_icon: DS.attr('string'),
+    weather_wind_speed: DS.attr('number'),
+    weather_temperature: DS.attr('number'),
+
+    bar_width: function() {
+        if (this.get("overbooked")===0) {
+            return 'width: '+(this.get('registrations.length'))*100/(this.get('max_att'))+'%';
+        } else {
+            return 'width:'+this.get('max_att')*100/this.get("registrations.length")+'%';
+        }
+    }.property('registrations'),
+    bar_color: function() {
+        return this.get('registrations.length') > this.get('min_att') ? 'progress-bar' : 'progress-bar progress-bar-info';
+    }.property('registrations'),
+    overbooked: function() {
+        if (this.get('registrations.length') > this.get('max_att')) {
+            return this.get('registrations.length') - this.get('max_att');
+        }
+        return 0;
+    }.property('registrations'),
+
+    overbooked_with: function () {
+        return 'width: '+this.get('overbooked')*100/(this.get('overbooked')+this.get('max_att'))+'%';
+    }.property('registrations')
+});

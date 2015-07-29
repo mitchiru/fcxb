@@ -1,0 +1,206 @@
+html {
+    max-width: 800px;
+}
+
+body {
+    background-color: #D32F2F;
+}
+
+.ember-application {
+    background-color: #eee;
+}
+
+span.navbar-brand {
+    width: 55%;
+}
+
+.row-action-primary a {
+    margin: 3px 0 !important;
+}
+.row-action-added {
+    min-width: 58px;
+}
+
+.row-action-added h3 {
+    margin-top: 10px;
+}
+.row-action-added a {
+    background-color: green !important;
+    color: white !important;
+}
+
+.row-action-removed a {
+    background-color: red !important;
+    color: white !important;
+}
+
+.mapimage {
+    width: 100%;
+}
+
+.well .list-group {
+    margin-bottom: 0;
+}
+.list-group {
+    padding-top: 9px;
+}
+
+.list-group .list-group-item .list-group-item-heading {
+    font-size: 20px;
+}
+
+#memberlist .list-group-item-heading {
+    margin: 19px 0;
+}
+
+#memberlist .btn-removeConfirm {
+    opacity: 0.3;
+}
+
+.least-content {
+    width: 35px;
+    text-align: center;
+    font-size: 10px !important;
+}
+
+.form-control {
+    font-size: 20px;
+}
+.form-control-20 {
+    width: 20% !important;
+    margin: 0 2% 0 0 !important;
+    float: left !important;
+}
+
+.form-control-80 {
+    width: 78% !important;
+    float: left;
+}
+
+@media only screen and (max-width: 480px) {
+    .form-control-20 {
+        width: 35% !important;
+    }
+    .form-control-80 {
+        width: 63% !important;
+    }
+}
+
+#itemActionButtons {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+}
+
+.h3mini {
+    font-size: 10px;
+}
+
+.h3mini input {
+    font-size: 24px;
+    width: 45px;
+    display: inline;
+}
+
+.list-group-item[data-canceled='1'] .list-group-item-heading {
+    text-decoration: line-through;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.navbar {
+    margin-bottom: 10px !important;
+}
+.navbar-header {
+    width: 100%;
+}
+.navbar .navbar-right {
+    margin: 5px 5px 5px 0;
+    padding: 10px 15px 10px 0;
+    float: right;
+}
+
+.navbar-left {
+    margin-top: 3px;
+    float: left;
+}
+
+.event-detail, .event-detail {
+    margin-top: -10px;
+}
+
+body:before{
+    display: block;
+    content: " ";
+    height: 20px;
+    top: 0;
+    background-color: #D32F2F;
+    position: -webkit-sticky;
+    position: sticky;
+}
+
+.navbar-info.navbar{
+    background-color:#F44336 !important;
+}
+
+.weather img {
+    float: left;
+    margin: 0 5px 0 30px;
+    height: 42px;
+}
+.condIcon i {
+    font-size: 33px;
+    margin: 0 5px 0 30px;
+
+}
+.weather .temp_img img {
+    height: 32px;
+}
+
+.weatherWindSpeed .wws_text {
+    font-size: 10px;
+    float: left;
+    padding-top: 11px;
+}
+.weatherWindSpeed .wws_fig {
+    font-size: 33px;
+    display: block;
+    float: left;
+    margin: 0 5px 0 30px;
+}
+
+.temperature {
+    font-size: 33px;
+}
+
+.list-group-item-text {
+    color: #757575;
+    float: left;
+    display: inline-block;
+    width: 90%;
+}
+
+.weather div {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.RemoveDiv, .CancelDiv {
+    display: none;
+}
+
+.navbar a, .removeConfirm {
+    cursor: pointer;
+}
+
+#copyright {
+    opacity: 0.3;
+}
+

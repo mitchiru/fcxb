@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+    <!--<?php print '-'.'->';
+        if (strlen($_SERVER['REQUEST_URI'])>1 && strstr($_SERVER['REQUEST_URI'],'/event/')!== false) {
+    $d = explode('/',$_SERVER['REQUEST_URI']);
+
+    $event_id = intval($d[2]);
+    $api = @json_decode(file_get_contents('http://api.fcxb.de/events/'.$event_id),true);
+
+    if (isset($api['events'][0]['name'])) {
+    print '<title>FCXB Doodle for football on '.$api['events'][0]['name'].'</title>';
+    } else {
+    print '<title>FCXB Doodle</title>';
+    }
+    } else {
+    print '<title>FCXB Doodle</title>';
+    }
+    print '<!-'.'-'; ?>-->
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FCXB Doodle">
+    <link rel="manifest" href="/icons/manifest.json">
+
+
+    <link rel="apple-touch-icon" href="/icons/icon57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon180.png" sizes="180x180">
+    <link rel="shortcut icon" href="/icons/icon180.png" sizes="196x196">
+    <link rel="icon" type="image/png" href="/icons/favicon.png">
+
+
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/prototype/css/roboto.min.css" rel="stylesheet">
+    <link href="/prototype/css/material.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/vendor.css">
+    <link rel="stylesheet" href="/assets/fcxb.css">
+
+    {{content-for 'head'}}
+</head>
+<body>
+{{content-for 'body'}}
+
+
+<script src="/assets/vendor.js"></script>
+<script src="/assets/fcxb.js"></script>
+
+{{content-for 'body-footer'}}
+</body>
+</html>
