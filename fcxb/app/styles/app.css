@@ -196,7 +196,7 @@ body:before{
     display: none;
 }
 
-.navbar a, .removeConfirm {
+.navbar a, .removeConfirm, .pointer {
     cursor: pointer;
 }
 
@@ -204,3 +204,15 @@ body:before{
     opacity: 0.3;
 }
 
+.event-private {
+    opacity: 0.3;
+}
+
+.radio label {
+    padding-left: 0;
+}
+
+.forminfologo {
+    float: left;
+    margin: 5px 4px 0 -4px;
+}

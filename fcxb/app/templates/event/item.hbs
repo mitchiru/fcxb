@@ -1,6 +1,6 @@
 <div class="navbar navbar-info">
     <div class="navbar-header">
-        {{#link-to 'matches' class="navbar-brand navbar-left"}}
+        {{#link-to 'events' class="navbar-brand navbar-left"}}
             <i class="mdi-navigation-arrow-back"></i>
             <div class="ripple-wrapper"></div>
         {{/link-to}}
@@ -28,7 +28,6 @@
         {{/if}}
     </div>
     <div class="mapsubsitute">
-
     </div>
     <a href="https://www.google.com/maps/dir/Current+Location/{{model.location}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{model.location}}&zoom=15&scale=false&size=1000x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:blue%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
     <div class="well">
@@ -68,7 +67,7 @@
                 {{#if model.weather}}
                 <table class="weather">
                     <tr>
-                        <td class="temp_img"><img src="/icons/Themperature.png"></td>
+                        <td class="temp_img"><img src="{{model.weather_temperature_icon}}"></td>
                         <td class="temperature">{{model.weather_temperature}}°</td>
                         <td><img {{bind-attr src=model.weather_icon}}></td>
                         <td class="weatherDescription">{{model.weather}}</td>

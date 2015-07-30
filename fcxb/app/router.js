@@ -6,13 +6,7 @@ var Router = Ember.Router.extend({
 });
 
 export default Router.map(function() {
-  this.route('matches', {path: '/'});
-
-  this.resource('event', function() {
-
-
-      this.route('edit', { path: ':id' });
-  });
+  this.route('events', {path: '/'});
 
   this.route('event', function() {
       this.route('item', { path: ':event_id' });

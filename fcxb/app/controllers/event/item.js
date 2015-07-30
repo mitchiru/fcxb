@@ -110,7 +110,7 @@ export default Ember.Controller.extend({
             var _this = this;
 
             this.get('model').destroyRecord().then(function() {
-                _this.transitionToRoute('matches');
+                _this.transitionToRoute('events');
             });
         },
         cancelEventConfirm: function () {
@@ -125,7 +125,7 @@ export default Ember.Controller.extend({
             var Model = this.get('model');
             Model.set('canceled', 1);
             Model.save().then(function() {
-                _this.transitionToRoute('matches');
+                _this.transitionToRoute('events');
             });
         },
         uncancelEvent: function () {
@@ -133,7 +133,7 @@ export default Ember.Controller.extend({
             var Model = this.get('model');
             Model.set('canceled', 0);
             Model.save().then(function() {
-                _this.transitionToRoute('matches');
+                _this.transitionToRoute('events');
             });
         }
 

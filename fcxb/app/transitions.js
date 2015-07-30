@@ -5,7 +5,7 @@ export default function(){
     );
 
     this.transition(
-        this.toRoute('matches'),
+        this.toRoute('events'),
         this.use('toRight', { duration: 300 })
     );
 }

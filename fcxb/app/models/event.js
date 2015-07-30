@@ -7,10 +7,10 @@ export default DS.Model.extend({
     evdate_dif: DS.attr('string'),
     description: DS.attr('string'),
     canceled: DS.attr('number'),
+    private: DS.attr('number'),
     min_att: DS.attr('number'),
     max_att: DS.attr('number'),
     location: DS.attr('string'),
-    lists: DS.hasMany('list', {async: true}),
     registrations: DS.hasMany('registrations', {async: false}),
     weekday: DS.attr('string'),
     hour: DS.attr('string'),
@@ -18,6 +18,35 @@ export default DS.Model.extend({
     weather_icon: DS.attr('string'),
     weather_wind_speed: DS.attr('number'),
     weather_temperature: DS.attr('number'),
+
+    weather_temperature_icon: function() {
+        var date = new Date(this.get('evdate')*1000);
+        var month = date.getMonth();
+        var seasonTemperature = [20,30];
+
+        switch (month) {
+            case 0:
+            case 1:
+            case 2:
+            case 11:
+                seasonTemperature = [0,10];
+                break;
+            case 3:
+            case 4:
+            case 9:
+            case 10:
+                seasonTemperature = [10,20];
+                break;
+        }
+
+        if (this.get('weather_temperature') > seasonTemperature[1]) {
+            return '/icons/Themperature_high.png';
+        } else if (this.get('weather_temperature') < seasonTemperature[0]) {
+            return '/icons/Themperature_low.png';
+        } else {
+            return '/icons/Themperature_medium.png';
+        }
+    }.property('weather_temperature'),
 
     bar_width: function() {
         if (this.get("overbooked")===0) {

@@ -1,6 +1,6 @@
 <div class="navbar navbar-info">
     <div class="navbar-header">
-        {{#link-to 'matches' class="navbar-brand navbar-left"}}
+        {{#link-to 'events' class="navbar-brand navbar-left"}}
         <i class="mdi-navigation-arrow-back"></i>
         <div class="ripple-wrapper"></div>
         {{/link-to}}
@@ -9,77 +9,85 @@
 </div>
 <div class="event-detail">
     <div class="well">
-        <form class="form-horizontal" {{action "save" on="submit"}}>
-            <fieldset>
-                <div class="form-group">
-                    <label for="inputSubject" class="col-lg-2 control-label">Match on next:</label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            {{view "select" value=model.weekday content=weekdays  class="form-control form-control-20"}}
-                            {{input value=model.name placeholder="19:00 Training" class="form-control form-control-80"}}
-                            <span class="input-group-addon"><i class="mdi-notification-event-note"></i></span>
-                        </div>
+    <form class="form-horizontal" {{action "save" on="submit"}}>
+        <fieldset>
+            <img src="/icons/navicon.png" class="forminfologo">
+            <p><em style="opacity:0.6">This Doodle System was created to enable everyone to share public or private matches with other players.</em></p>
+            <div class="form-group">
+                <label for="inputSubject" class="col-lg-2 control-label">Match on next:</label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        {{view "select" value=model.weekday content=weekdays  class="form-control form-control-20"}}
+                        {{input value=model.name placeholder="19:00 Training" class="form-control form-control-80"}}
+                        <span class="input-group-addon"><i class="mdi-notification-event-note"></i></span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputDescription" class="col-lg-2 control-label">More info</label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            {{input value=model.description placeholder="Description" class="form-control"}}
-                            <span class="input-group-addon"><i class="mdi-action-description"></i></span>
-                        </div>
+            </div>
+            <div class="form-group">
+                <label for="inputDescription" class="col-lg-2 control-label">More info</label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        {{input value=model.description placeholder="Description" class="form-control"}}
+                        <span class="input-group-addon"><i class="mdi-action-description"></i></span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputWhere" class="col-lg-2 control-label">Where</label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            {{input value=model.location placeholder="Sportplatz Wiener Straße, Berlin, GERMANY" class="form-control"}}
-                            <span class="input-group-addon"><i class="mdi-maps-pin-drop"></i></span>
-                        </div>
+            </div>
+            <div class="form-group">
+                <label for="inputWhere" class="col-lg-2 control-label">Where</label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        {{input value=model.location placeholder="Sportplatz Wiener Straße, Berlin, GERMANY" class="form-control"}}
+                        <span class="input-group-addon"><i class="mdi-maps-pin-drop"></i></span>
+                    </div>
 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputWhere" class="col-lg-2 control-label">Min. Players</label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        {{input type="number" value=model.min_att placeholder="8" class="form-control"}}
+                        <span class="input-group-addon"><i class="mdi-social-people-outline"></i></span>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="inputWhere" class="col-lg-2 control-label">Min. Players</label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            {{input type="number" value=model.min_att placeholder="8" class="form-control"}}
-                            <span class="input-group-addon"><i class="mdi-social-people-outline"></i></span>
-                        </div>
+            </div>
+            <div class="form-group">
+                <label for="inputWhere" class="col-lg-2 control-label">Max. Players</label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        {{input type="number" value=model.max_att placeholder="16"  class="form-control"}}
+                        <span class="input-group-addon"><i class="mdi-social-people"></i></span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputWhere" class="col-lg-2 control-label">Max. Players</label>
-                    <div class="col-lg-10">
-                        <div class="input-group">
-                            {{input type="number" value=model.max_att placeholder="16"  class="form-control"}}
-                            <span class="input-group-addon"><i class="mdi-social-people"></i></span>
-                        </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">This Doodle is public</label>
+                <div class="col-lg-10">
+                    <div class="radio radio-primary">
+                        <label {{action "setPublic"}}>
+                            <a class="pointer"><div {{bind-attr class=publicClass}}><div class="ripple-wrapper"></div></div></a>
+                            Yes, everybody can play
+                        </label>
+                    </div>
+                    <div class="radio radio-primary">
+                        <label {{action "setPrivate"}}>
+                            <a class="pointer"><div {{bind-attr class=privateClass}}><div class="ripple-wrapper"></div></div></a>
+                            No, only people who receive the direct link to this doodle
+                        </label>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-
-
-                    <label class="col-lg-2 control-label">Invite Groups</label>
-                    <!--div class="col-lg-10">
-                        {{#each list in model}}
-                            <input type="checkbox" {{bind-attr value=list.id id=list.htmlId}}>
-                            <label {{bind-attr for=list.htmlId}}>{{list.name}}</label>
-                            &nbsp;&nbsp;
-                        {{/each}}
-                    </div -->
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button class="btn btn-default" {{action "cancel"}}>Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-
-                <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
-                        <button class="btn btn-default" {{action "cancel"}}>Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
+            </div>
+        </fieldset>
+    </form>
+    <p><em style="opacity:0.6"><i class="mdi-content-content-paste"></i>After you created a Doodle, you 'should to' copy the link and invite other players via E-Mail, Facebook or WhatsApp.</em></p>
     </div>
 </div>
