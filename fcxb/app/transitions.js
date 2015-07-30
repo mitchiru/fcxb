@@ -1,6 +1,6 @@
 export default function(){
     this.transition(
-        this.toRoute('event.item'),
+        this.toRoute('event'),
         this.use('toLeft', { duration: 300 })
     );
 
