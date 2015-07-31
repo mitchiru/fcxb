@@ -6,13 +6,14 @@ module.exports = function(environment) {
         environment: environment,
         baseURL: '/',
         locationType: 'auto',
-        API: 'http://trainingslist.dev/API',
+        //API: 'http://trainingslist.dev/API',
+        API: 'http://api.fcxb.de',
         contentSecurityPolicy: {
             //https://github.com/rwjblue/ember-cli-content-security-policy
-            'default-src': "'none'",
+            'default-src': "'self'",
             'script-src': "'self' 'unsafe-inline' maxcdn.bootstrapcdn.com", // Allow scripts from https://cdn.mxpnl.com
             'font-src': "'self' http://fonts.googleapis.com http://maxcdn.bootstrapcdn.com", // Allow fonts to be loaded from http://fonts.gstatic.com
-            'connect-src': "'self' trainingslist.dev", // Allow data (ajax/websocket) from api.mixpanel.com and custom-api.local
+            'connect-src': "'self' trainingslist.dev api.fcxb.de", // Allow data (ajax/websocket) from api.mixpanel.com and custom-api.local
             'img-src': "'self' https://maps.googleapis.com trainingslist.dev api.fcxb.de",
             'style-src': "'self' 'unsafe-inline' http://fonts.googleapis.com http://maxcdn.bootstrapcdn.com", // Allow inline styles and loaded CSS from http://fonts.googleapis.com
             'media-src': "'self' https://maps.googleapis.com",
