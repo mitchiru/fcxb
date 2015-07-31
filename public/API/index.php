@@ -9,7 +9,7 @@ if ($_SERVER['HTTP_HOST']=='trainingslist.dev') {
 } else {
     $f3->set('DB',new DB\SQL('mysql:host=localhost;port=3306;dbname=mitchiru_fcxb','mitchiru','shee3gie3ohgh4iqu3t' ));
     $f3->set('PATH','');
-    header("Access-Control-Allow-Origin: http://fcxb.de");
+    header("Access-Control-Allow-Origin: *");
 }
 $f3->set('DEBUG',1);
 $f3->config('config.ini');
@@ -114,6 +114,7 @@ $f3->route('GET /events/@id',
 
             foreach ($f3->get('users') as $l_key => $l_value) {
                 $l_value['id'] = intval($l_value['id']);
+                $l_value['crdate'] = intval($l_value['crdate']);
                 $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
 
                 $listOutputUsers[] = $l_value['id'];
@@ -121,21 +122,20 @@ $f3->route('GET /events/@id',
             }
 
             $d = array(
-                "id" => $value['id'],
+
+                "id" => intval($value['id']),
                 "name" => $value['name'],
-                "group_id" => $value['group_id'],
-                "crdate" => $value['crdate'],
-                "chdate" => $value['chdate'],
-                "evdate" => dateFormat($value['evdate']),
+                "evdate" => intval($value['evdate']),
+                "evdate_str" => dateFormat($value['evdate']),
                 "weekday" => date("D",$value['evdate']),
                 "hour" => date("H:i",$value['evdate']),
                 "evdate_dif" => get_time_difference($value['evdate']),
                 "description" => $value['description'],
-                "canceled" => $value['canceled'],
-                "min_att" => $value['min_att'],
-                "max_att" => $value['max_att'],
+                "canceled" => ($value['canceled']?true:false),
+                "private" => ($value['private']?true:false),
+                "min_att" => intval($value['min_att']),
+                "max_att" => intval($value['max_att']),
                 "location" => $value['location'],
-                "lists" => $listOutputId,
                 "registrations" => $listOutputUsersFull
             );
 
@@ -153,7 +153,7 @@ $f3->route('GET /events',
         $f3->set('events',$f3->get('DB')->exec('SELECT * FROM events WHERE evdate > '.(time()-(6*3600)).' ORDER BY evdate ASC'));
 
 
-        $output = array();
+        $output = array('events'=>array());
         foreach ($f3->get('events') as $key => $value) {
 
                 //retrieve lists
@@ -180,6 +180,7 @@ $f3->route('GET /events',
 
                 foreach ($f3->get('users') as $l_key => $l_value) {
                     $l_value['id'] = intval($l_value['id']);
+                    $l_value['crdate'] = intval($l_value['crdate']);
                     $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
 
                     $listOutputUsers[] = $l_value['id'];
@@ -187,21 +188,20 @@ $f3->route('GET /events',
                 }
 
                 $d = array(
-                    "id" => $value['id'],
+                    "id" => intval($value['id']),
                     "name" => $value['name'],
-                    "group_id" => $value['group_id'],
-                    "evdate" => $value['evdate'],
+                    "evdate" => intval($value['evdate']),
                     "evdate_str" => dateFormat($value['evdate']),
                     "weekday" => date("D",$value['evdate']),
                     "hour" => date("H:i",$value['evdate']),
                     "evdate_dif" => get_time_difference($value['evdate']),
                     "description" => $value['description'],
-                    "canceled" => $value['canceled'],
-                    "min_att" => $value['min_att'],
-                    "max_att" => $value['max_att'],
+                    "canceled" => ($value['canceled']?true:false),
+                    "private" => ($value['private']?true:false),
+                    "min_att" => intval($value['min_att']),
+                    "max_att" => intval($value['max_att']),
                     "location" => $value['location'],
-                    "lists" => $listOutputId,
-                    "registrations" => $listOutputUsersFull,
+                    "registrations" => $listOutputUsersFull
                 );
 
                 $d = array_merge($d,retrieveWeatherForDay($value['evdate']));
@@ -242,6 +242,7 @@ $f3->route('POST /events',function($f3) {
         description,
         min_att,
         max_att,
+        private,
         location
     ) VALUES (
         "'.mres($POST->event->weekday.' '.$POST->event->name).'",
@@ -251,6 +252,7 @@ $f3->route('POST /events',function($f3) {
         "'.mres($POST->event->description).'",
         "'.intval($POST->event->min_att).'",
         "'.intval($POST->event->max_att).'",
+        "'.intval($POST->event->private).'",
         "'.mres($POST->event->location).'"
     )');
 
@@ -269,6 +271,7 @@ $f3->route('POST /events/@id',function($f3) {
             max_att = "'.intval($POST->event->max_att).'",
             name = "'.mres($POST->event->name).'",
             description = "'.mres($POST->event->description).'",
+            private = "'.intval($POST->event->private).'",
             canceled = "'.intval($POST->event->canceled).'"
         WHERE id = '.intval($f3->get('PARAMS.id')).'
     ');

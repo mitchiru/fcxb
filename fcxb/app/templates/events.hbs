@@ -6,7 +6,7 @@
     </div>
 </div>
 {{outlet}}
-<div class="list-group">
+<div class="list-group event-list">
     {{#each event in sortedList}}
         {{#if event.id}}
         {{#if event.private}}
@@ -20,9 +20,9 @@
                 <div class="row-content">
 
                     <h4 class="list-group-item-heading ellipsis">{{event.name}}</h4>
-                    <p class="list-group-item-text ellipsis">
+                    <p class="list-group-item-text ellipsis"><small>
                         Not public
-                    </p>
+                    </small></p>
                 </div>
                 <div class="progress">
                     <div {{bind-attr class=event.bar_color style=event.bar_width}}></div>
@@ -40,9 +40,9 @@
                 <div class="row-content">
                     <div class="least-content">{{event.evdate_dif}}</div>
                     <h4 class="list-group-item-heading ellipsis">{{event.name}}</h4>
-                    <p class="list-group-item-text ellipsis">
+                    <p class="list-group-item-text ellipsis"><small>
                         {{#if event.description}}{{event.description}}{{else}}{{event.evdate_str}}{{/if}}
-                    </p>
+                    </small></p>
                 </div>
                 {{/link-to}}
                 <div class="progress">

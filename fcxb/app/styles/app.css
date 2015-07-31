@@ -38,15 +38,17 @@ span.navbar-brand {
     width: 100%;
 }
 
-.well .list-group {
-    margin-bottom: 0;
-}
-.list-group {
-    padding-top: 9px;
+.list-group .list-group-item-heading h2 {
+    margin-top: 10px;
 }
 
-.list-group .list-group-item .list-group-item-heading {
-    font-size: 20px;
+.event-list {
+    margin-top: 20px;
+}
+
+input.input-heading {
+    font-size: 30px;
+    margin: 16px 0 12px;
 }
 
 #memberlist .list-group-item-heading {
@@ -55,6 +57,26 @@ span.navbar-brand {
 
 #memberlist .btn-removeConfirm {
     opacity: 0.3;
+}
+
+#memberlist .least-content {
+    padding: 16px 0;
+}
+
+.list-group-bellowheading {
+    margin-top: -10px;
+}
+
+.list-group-left {
+    float: left;
+    width: 49%;
+    opacity: 0.6;
+}
+.list-group-right {
+    float: right;
+    width: 49%;
+    text-align: right;
+    opacity: 0.6;
 }
 
 .least-content {
@@ -146,7 +168,9 @@ body:before{
 .navbar-info.navbar{
     background-color:#F44336 !important;
 }
-
+.weather {
+    margin: 15px 0 -5px;
+}
 .weather img {
     float: left;
     margin: 0 5px 0 30px;
@@ -179,9 +203,6 @@ body:before{
 
 .list-group-item-text {
     color: #757575;
-    float: left;
-    display: inline-block;
-    width: 90%;
 }
 
 .weather div {

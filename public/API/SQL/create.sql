@@ -41,6 +41,7 @@ CREATE TABLE events (
   name      VARCHAR(60),
   group_id  INTEGER,
   canceled  BOOLEAN NOT NULL DEFAULT FALSE,
+  private   BOOLEAN NOT NULL DEFAULT FALSE,
   crdate    INTEGER,
   chdate    INTEGER,
   evdate    INTEGER,
