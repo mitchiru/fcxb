@@ -8,9 +8,12 @@ var Router = Ember.Router.extend({
 export default Router.map(function() {
   this.route('events', {path: '/'});
 
-  this.route('event', function() {
-      this.route('item', { path: ':event_id' });
-      this.route('new');
-  });
+
+    this.route('event.item', { path: '/:event_id' });
+    this.route('event.share', { path: '/s/:event_id' });
+    this.route('event.new');
+
+
+
 
 });

@@ -1,11 +1,14 @@
 export default function(){
     this.transition(
-        this.toRoute('event'),
-        this.use('toLeft', { duration: 300 })
+        this.fromRoute('events'),
+        this.toRoute('event.item'),
+        this.use('toLeft'),
+        this.reverse('toRight')
     );
 
     this.transition(
-        this.toRoute('events'),
-        this.use('toRight', { duration: 300 })
+        this.toRoute('event.new'),
+        this.use('toLeft'),
+        this.reverse('toRight')
     );
 }

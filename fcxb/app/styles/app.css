@@ -48,7 +48,11 @@ span.navbar-brand {
 
 input.input-heading {
     font-size: 30px;
-    margin: 16px 0 12px;
+    margin: 10px 0 12px;
+}
+
+textarea.desc-textarea {
+    font-size: 14px;
 }
 
 #memberlist .list-group-item-heading {
@@ -236,4 +240,18 @@ body:before{
 .forminfologo {
     float: left;
     margin: 5px 4px 0 -4px;
+}
+
+.sharebutton {
+    position: absolute;
+    right: 20px;
+    top: 80px;
+}
+
+.detail-counter {
+    margin-top: -20px;
+}
+.detail-counter h3 {
+    padding: 0;
+    margin: 0;
 }

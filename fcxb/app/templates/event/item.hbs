@@ -1,8 +1,8 @@
 <div class="navbar navbar-info">
     <div class="navbar-header">
         {{#link-to 'events' class="navbar-brand navbar-left"}}
-            <i class="mdi-navigation-arrow-back"></i>
-            <div class="ripple-wrapper"></div>
+        <i class="mdi-navigation-arrow-back"></i>
+        <div class="ripple-wrapper"></div>
         {{/link-to}}
         <span class="navbar-brand navbar-left ellipsis">{{model.name}}</span>
 
@@ -27,30 +27,31 @@
             <a {{action "cancelEvent" model.id}} class="btn btn-danger btn-raised">Yes, cancel</a>
         {{/if}}
     </div>
+    {{#link-to 'event.share' model.id class="sharebutton btn btn-info btn-fab btn-raised mdi-action-grade"}}{{/link-to}}
     <div class="mapsubsitute">
     </div>
     <a href="https://www.google.com/maps/dir/Current+Location/{{model.location}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{model.location}}&zoom=15&scale=false&size=1000x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:blue%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
     <div class="well"  {{bind-attr data-canceled=model.canceled}}>
         <div class="list-group">
             <div class="list-group-item list-group-item-heading">
-                <div class="row-action-primary row-action-added">
-                    <h3><center>{{model.registrations.length}}
-                        {{#if isEditingMax}}
-                        <span class="h3mini">/
-                            {{input id="inputMax" type="number" value=bufferedMax escape-press='cancelEditingMax' focus-out='doneEditingMax' insert-newline='doneEditingMax' placeholder="16" class="form-control" autocomplete="off"}}
-                        </span>
-                        {{else}}
-                        <span class="h3mini" {{action 'startEditingMax'}}>/{{model.max_att}}</span>
-                        {{/if}}
-                    </center></h3>
-                </div>
                 {{#if isEditingName}}
-                    {{input value=bufferedName escape-press='cancelEditingName' focus-out='doneEditingName' insert-newline='doneEditingName' placeholder="Name" class="form-control input-heading" autocomplete="off"}}
+                    {{input id="input-heading" value=bufferedName escape-press='cancelEditingName' focus-out='doneEditingName' insert-newline='doneEditingName' placeholder="Name" class="form-control input-heading" autocomplete="off"}}
                 {{else}}
                 <h2  {{action 'startEditingName'}}>{{model.name}}</h2>
                 {{/if}}
                 <div class="list-group-left"><p class="list-group-bellowheading"><small>{{model.evdate_str}}</small></p></div>
                 <div class="list-group-right"><p class="list-group-bellowheading"><small>{{model.evdate_dif}}</small></p></div>
+            </div>
+            <div class="detail-counter">
+                <h3><center>{{model.registrations.length}}
+                    {{#if isEditingMax}}
+                        <span class="h3mini">/
+                            {{input id="inputMax" type="number" value=bufferedMax escape-press='cancelEditingMax' focus-out='doneEditingMax' insert-newline='doneEditingMax' placeholder="16" class="form-control" autocomplete="off"}}
+                        </span>
+                    {{else}}
+                    <span class="h3mini" {{action 'startEditingMax'}}>/{{model.max_att}}</span>
+                    {{/if}}
+                </center></h3>
             </div>
             <div class="progress">
                 <div {{bind-attr class=model.bar_color style=model.bar_width}}></div>
@@ -62,7 +63,11 @@
                 {{#if model.canceled}}
                 <p class="list-group-item-text">+ + + + + + CANCELED + + + + + </p>
                 {{else}}
-                <p class="list-group-item-text">{{model.description}}</p>
+                    {{#if isEditingDesc}}
+                        {{textarea value=bufferedDesc  escape-press='cancelEditingDesc' focus-out='doneEditingDesc' class="form-control desc-textarea"}}
+                    {{else}}
+                        <p class="list-group-item-text" {{action 'startEditingDesc'}}>{{model.description}}</p>
+                    {{/if}}
                 {{/if}}
 
                 {{#if model.weather}}

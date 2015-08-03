@@ -10,8 +10,10 @@ export default Ember.Controller.extend({
 
     }.property('model'),
     isEditingName: false,
+    isEditingDesc: false,
     isEditingMax: false,
     bufferedName: '',
+    bufferedDesc: '',
     bufferedMax: '',
     actions: {
         focusInput: function () {
@@ -43,6 +45,11 @@ export default Ember.Controller.extend({
             this.set('isEditingName',1);
             var Model = this.get('model');
             this.set('bufferedName', Model.get('name'));
+        },
+        startEditingDesc: function () {
+            this.set('isEditingDesc',1);
+            var Model = this.get('model');
+            this.set('bufferedDesc', Model.get('description'));
         },
         startEditingMax: function () {
             Ember.$('#inputMax').focus();
@@ -77,9 +84,27 @@ export default Ember.Controller.extend({
 
             this.set('isEditingMax', 0);
         },
+        doneEditingDesc: function () {
+            var bufferedDesc = this.get('bufferedDesc');
+
+            if (Ember.isEmpty(bufferedDesc)) {
+                this.send('cancelEditingDesc');
+            } else {
+                var Model = this.get('model');
+                Model.set('description', bufferedDesc);
+                Model.save();
+            }
+
+            this.set('isEditingDesc', 0);
+        },
         cancelEditingName: function () {
             this.set('bufferedName', this.get('name'));
             this.set('isEditingName',0);
+        },
+        cancelEditingDesc: function () {
+            alert('cancelEditingDesc');
+            this.set('bufferedDesc', this.get('description'));
+            this.set('isEditingDesc',0);
         },
         cancelEditingMax: function () {
             this.set('bufferedMax', this.get('max_att'));

@@ -55,8 +55,11 @@ export default DS.Model.extend({
             return 'width:'+this.get('max_att')*100/this.get("registrations.length")+'%';
         }
     }.property('registrations'),
+    link: function () {
+        return 'http://fcxb.de/'+this.get('id');
+    }.property('id'),
     bar_color: function() {
-        return this.get('registrations.length') > this.get('min_att') ? 'progress-bar' : 'progress-bar progress-bar-info';
+        return this.get('registrations.length') >= this.get('min_att') ? 'progress-bar' : 'progress-bar progress-bar-info';
     }.property('registrations'),
     overbooked: function() {
         if (this.get('registrations.length') > this.get('max_att')) {
