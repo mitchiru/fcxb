@@ -1,0 +1,20 @@
+<div class="navbar navbar-info">
+    <div class="navbar-header">
+        {{#link-to 'event.item' model.id class="navbar-brand navbar-left"}}
+        <i class="mdi-navigation-arrow-back"></i>
+        <div class="ripple-wrapper"></div>
+        {{/link-to}}
+        <span class="navbar-brand navbar-left navbar-full ellipsis">{{model.name}}</span>
+    </div>
+</div>
+<div class="pitch">
+    <div class="lineup">
+        {{#each registration in sortedList}}
+        {{view "player" player=registration}}
+        {{/each}}
+    </div>
+    <img src="/icons/pitch.svg">
+</div>
+
+
+{{outlet}}

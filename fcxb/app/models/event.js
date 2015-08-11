@@ -47,7 +47,9 @@ export default DS.Model.extend({
             return '/icons/Themperature_medium.png';
         }
     }.property('weather_temperature'),
-
+    google_maps_link: function () {
+        return 'https://www.google.com/maps/dir/Current+Location/'+this.get('location');
+    }.property('location'),
     bar_width: function() {
         if (this.get("overbooked")===0) {
             return 'width: '+(this.get('registrations.length'))*100/(this.get('max_att'))+'%';

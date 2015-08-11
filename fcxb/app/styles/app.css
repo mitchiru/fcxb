@@ -14,6 +14,10 @@ span.navbar-brand {
     width: 55%;
 }
 
+span.navbar-full {
+    width: 75%;
+}
+
 .row-action-primary a {
     margin: 3px 0 !important;
 }
@@ -248,10 +252,50 @@ body:before{
     top: 80px;
 }
 
+.lineupbutton {
+    position: absolute;
+    left: 20px;
+    top: 80px;
+}
+
 .detail-counter {
-    margin-top: -20px;
+    margin-top: -16px;
 }
 .detail-counter h3 {
     padding: 0;
     margin: 0;
+}
+
+.form-naked {
+    padding: 20px;
+}
+
+.pitch {
+    width: 100%;
+    padding: 0 5px
+}
+
+.pitch img {
+    width: 310px;
+    height: auto;
+}
+
+.lineup .player {
+    cursor: pointer;
+    position: absolute;
+    padding: 5px 6px 5px 12px;
+    margin: 0;
+    width: 120px;
+    height: 30px;
+    overflow: hidden;
+    background: url(/icons/dragable-handle.png) no-repeat;
+    z-index: 90;
+    cursor: move;
+    opacity: 0.9;
+}
+
+.player.sub {
+    background-color: grey !important;
+    opacity: 0.8;
+    z-index: 89;
 }

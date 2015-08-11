@@ -7,6 +7,20 @@ export default function(){
     );
 
     this.transition(
+        this.fromRoute('event.item'),
+        this.toRoute('event.share'),
+        this.use('toLeft'),
+        this.reverse('toRight')
+    );
+
+    this.transition(
+        this.fromRoute('event.item'),
+        this.toRoute('event.lineup'),
+        this.use('toLeft'),
+        this.reverse('toRight')
+    );
+
+    this.transition(
         this.toRoute('event.new'),
         this.use('toLeft'),
         this.reverse('toRight')

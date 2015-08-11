@@ -5,9 +5,6 @@
         <div class="ripple-wrapper"></div>
         {{/link-to}}
         <span class="navbar-brand navbar-left ellipsis">{{model.name}}</span>
-
-        <a {{action "cancelEventConfirm" model.id}} class="navbar-brand navbar-right"><i class="mdi-notification-sms-failed"></i></a>
-        <a {{action "removeEventConfirm" model.id}} class="navbar-brand navbar-right"><i class="mdi-content-remove-circle"></i></a>
     </div>
 </div>
 <div class="event-detail">
@@ -40,7 +37,7 @@
     </div>
 </div>
 
-<form class="form-horizontal">
+<form class="form-horizontal form-naked">
     <fieldset>
     <div class="form-group">
         <label for="input-copy" class="col-lg-2 control-label">Copy Link</label>
@@ -48,6 +45,24 @@
             <div class="input-group">
                 {{input id="input-copy" focus-in="selectAll" value=model.link class="form-control"}}
                 <span class="input-group-addon"><i class="mdi-content-content-copy"></i></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="input-copy" class="col-lg-2 control-label">Copy Address</label>
+        <div class="col-lg-10">
+            <div class="input-group">
+                {{input id="input-copy-location" focus-in="selectAllLocation" insert-newline='doneEditingLocation' value=model.location class="form-control"}}
+                <span class="input-group-addon"><i class="mdi-maps-pin-drop"></i></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="input-copy" class="col-lg-2 control-label">Copy Link to Google Maps</label>
+        <div class="col-lg-10">
+            <div class="input-group">
+                {{input id="input-copy-mapsLink" focus-in="selectAllMapsLink" value=model.google_maps_link class="form-control"}}
+                <span class="input-group-addon"><i class="mdi-maps-pin-drop"></i></span>
             </div>
         </div>
     </div>

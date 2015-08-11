@@ -27,10 +27,11 @@
             <a {{action "cancelEvent" model.id}} class="btn btn-danger btn-raised">Yes, cancel</a>
         {{/if}}
     </div>
-    {{#link-to 'event.share' model.id class="sharebutton btn btn-info btn-fab btn-raised mdi-action-grade"}}{{/link-to}}
+    {{#link-to 'event.share' model.id class="sharebutton btn btn-fab btn-raised mdi-social-share"}}{{/link-to}}
+    {{#link-to 'event.lineup' model.id class="lineupbutton btn btn-default btn-fab btn-raised mdi-action-grade"}}{{/link-to}}
     <div class="mapsubsitute">
     </div>
-    <a href="https://www.google.com/maps/dir/Current+Location/{{model.location}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{model.location}}&zoom=15&scale=false&size=1000x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:blue%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
+    <a href="{{model.google_maps_link}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{model.location}}&zoom=15&scale=false&size=1000x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:blue%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
     <div class="well"  {{bind-attr data-canceled=model.canceled}}>
         <div class="list-group">
             <div class="list-group-item list-group-item-heading">
@@ -95,11 +96,16 @@
         {{else}}
         <div class="list-group-item">
             <div class="row-action-primary row-action-remove-member">
+                {{#if inputAddPlayer}}
+                <a {{action "focusInput"}} class="btn btn-default btn-fab btn-raised mdi-content-add  btn-success"><div class="ripple-wrapper"></div></a>
+                {{else}}
                 <a {{action "focusInput"}} class="btn btn-default btn-fab btn-raised mdi-content-add"><div class="ripple-wrapper"></div></a>
+                {{/if}}
             </div>
             <div class="row-content">
-                <div class="least-content"></div>
-                <h4 class="list-group-item-heading">{{input id="inputAddPlayer" value="" insert-newline='addPlayer' placeholder="Name" class="form-control" autocomplete="off"}}</h4>
+                <h4 class="list-group-item-heading-input">
+                    {{input id="inputAddPlayer" value=inputAddPlayer insert-newline='addPlayer' placeholder="Name" class="form-control" autocomplete="off"}}
+                </h4>
             </div>
         </div>
         {{/if}}

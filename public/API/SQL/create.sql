@@ -69,6 +69,9 @@ CREATE TABLE registrations (
   crdate    INTEGER,
   chdate    INTEGER,
   confirmed BOOLEAN DEFAULT true,
+  sub       BOOLEAN DEFAULT false,
+  pos_x     INTEGER,
+  pos_y     INTEGER
 
   PRIMARY KEY (id),
   FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE

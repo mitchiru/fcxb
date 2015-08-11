@@ -106,7 +106,7 @@ $f3->route('GET /events/@id',
 
             //retrieve users
             $f3->set('users',$f3->get('DB')->exec('
-                    SELECT id, user, crdate
+                    SELECT id, user, crdate, pos_x, pos_y, sub
                     FROM registrations eu
                     WHERE eu.event_id = '.$value['id'].''));
             $listOutputUsers = array();
@@ -114,6 +114,9 @@ $f3->route('GET /events/@id',
 
             foreach ($f3->get('users') as $l_key => $l_value) {
                 $l_value['id'] = intval($l_value['id']);
+                $l_value['pos_y'] = intval($l_value['pos_y']);
+                $l_value['pos_x'] = intval($l_value['pos_x']);
+                $l_value['sub'] = ($l_value['sub']?true:false);
                 $l_value['crdate'] = intval($l_value['crdate']);
                 $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
 
@@ -172,7 +175,7 @@ $f3->route('GET /events',
 
                 //retrieve users
                 $f3->set('users',$f3->get('DB')->exec('
-                    SELECT id, user, crdate
+                    SELECT id, user, crdate,pos_x,pos_y,sub
                     FROM registrations eu
                     WHERE eu.event_id = '.$value['id'].''));
                 $listOutputUsers = array();
@@ -180,6 +183,9 @@ $f3->route('GET /events',
 
                 foreach ($f3->get('users') as $l_key => $l_value) {
                     $l_value['id'] = intval($l_value['id']);
+                    $l_value['pos_x'] = intval($l_value['pos_x']);
+                    $l_value['pos_y'] = intval($l_value['pos_y']);
+                    $l_value['sub'] = ($l_value['sub']?true:false);
                     $l_value['crdate'] = intval($l_value['crdate']);
                     $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
 
@@ -271,6 +277,7 @@ $f3->route('POST /events/@id',function($f3) {
             max_att = "'.intval($POST->event->max_att).'",
             name = "'.mres($POST->event->name).'",
             description = "'.mres($POST->event->description).'",
+            location = "'.mres($POST->event->location).'",
             private = "'.intval($POST->event->private).'",
             canceled = "'.intval($POST->event->canceled).'"
         WHERE id = '.intval($f3->get('PARAMS.id')).'
@@ -420,6 +427,9 @@ $f3->route('GET /registrations/@id',
             SELECT r.id,
                    r.user,
                    r.crdate,
+                   r.pos_x,
+                   r.pos_y,
+                   r.sub,
                    event_id
             FROM registrations r
             WHERE r.id = '.intval($f3->get('PARAMS.id')).'
@@ -459,6 +469,29 @@ $f3->route('POST /registrations',
         //1 = '.$f3->get('POST.group_id').'
 
         $POST->registration->id = $f3->get('DB')->lastinsertid();
+
+        #{"user":{"first_name":"Han","last_name":"Solo","id":"19"}}
+        print json_encode($POST);
+
+        #print file_get_contents('http://'.$_SERVER['HTTP_HOST'].'/'.$f3->get('PATH').'registrations/'.intval($POST->registration->event));
+    }
+);
+
+$f3->route('POST /registrations/@id',
+    function($f3) {
+
+        $POST = json_decode(file_get_contents('php://input'));
+
+        $f3->get('DB')->exec('UPDATE registrations
+        SET pos_x = '.intval($POST->registration->pos_x).',
+            pos_y = '.intval($POST->registration->pos_y).',
+            sub = '.($POST->registration->sub?'true':'false').',
+            chdate = "'.time().'"
+
+         WHERE id = '.intval($f3->get('PARAMS.id'))
+        );
+
+        $POST->registration->id = intval($f3->get('PARAMS.id'));
 
         #{"user":{"first_name":"Han","last_name":"Solo","id":"19"}}
         print json_encode($POST);

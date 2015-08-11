@@ -12,6 +12,7 @@ export default Ember.Controller.extend({
     isEditingName: false,
     isEditingDesc: false,
     isEditingMax: false,
+    inputAddPlayer: '',
     bufferedName: '',
     bufferedDesc: '',
     bufferedMax: '',
