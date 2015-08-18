@@ -71,6 +71,12 @@ textarea.desc-textarea {
     padding: 16px 0;
 }
 
+.least-content {
+    width: 35px;
+    text-align: center;
+    font-size: 10px !important;
+}
+
 .list-group-bellowheading {
     margin-top: -10px;
 }
@@ -85,12 +91,6 @@ textarea.desc-textarea {
     width: 49%;
     text-align: right;
     opacity: 0.6;
-}
-
-.least-content {
-    width: 35px;
-    text-align: center;
-    font-size: 10px !important;
 }
 
 .form-control {
@@ -113,6 +113,11 @@ textarea.desc-textarea {
     }
     .form-control-80 {
         width: 63% !important;
+    }
+}
+@media only screen and (max-width: 320px) {
+    .least-content {
+        display: none;
     }
 }
 
@@ -163,6 +168,11 @@ textarea.desc-textarea {
     margin-top: -10px;
 }
 
+.event-detail .jumbotron {
+    position: relative;
+    z-index: 2;
+}
+
 body:before{
     display: block;
     content: " ";
@@ -181,8 +191,12 @@ body:before{
 }
 .weather img {
     float: left;
-    margin: 0 5px 0 30px;
+    margin: 0 5px 0 10px;
     height: 42px;
+}
+
+.weatherDescription {
+    font-size: 10px;
 }
 .condIcon i {
     font-size: 33px;
@@ -276,7 +290,8 @@ body:before{
 }
 
 .pitch img {
-    width: 310px;
+    width: 100%;
+    max-width: 800px;
     height: auto;
 }
 

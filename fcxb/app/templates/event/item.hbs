@@ -6,25 +6,25 @@
         {{/link-to}}
         <span class="navbar-brand navbar-left ellipsis">{{model.name}}</span>
 
-        <a {{action "cancelEventConfirm" model.id}} class="navbar-brand navbar-right"><i class="mdi-notification-sms-failed"></i></a>
-        <a {{action "removeEventConfirm" model.id}} class="navbar-brand navbar-right"><i class="mdi-content-remove-circle"></i></a>
+        <a {{action "cancelEventConfirm" model.id}} rel="nofollow" class="navbar-brand navbar-right"><i class="mdi-notification-sms-failed"></i></a>
+        <a {{action "removeEventConfirm" model.id}} rel="nofollow" class="navbar-brand navbar-right"><i class="mdi-content-remove-circle"></i></a>
     </div>
 </div>
 <div class="event-detail">
     <div class="jumbotron RemoveDiv">
         <p><i class="mdi-alert-warning"></i> Do you really want to delete this match?</p>
         <a {{action "hideRemoveDiv"}} class="btn btn-default btn-raised">no</a>
-        <a {{action "removeEvent" model.id}} class="btn btn-danger btn-raised">Yes, delete</a>
+        <a {{action "removeEvent" model.id}} rel="nofollow" class="btn btn-danger btn-raised">Yes, delete</a>
     </div>
     <div class="jumbotron CancelDiv">
         {{#if model.canceled}}
         <p><i class="mdi-alert-warning"></i> Do you really want to uncancel this match?</p>
         <a {{action "hideCancelDiv"}} class="btn btn-default btn-raised">no</a>
-        <a {{action "uncancelEvent" model.id}} class="btn btn-danger btn-raised">Yes, uncancel</a>
+        <a {{action "uncancelEvent" model.id}} rel="nofollow" class="btn btn-danger btn-raised">Yes, uncancel</a>
         {{else}}
             <p><i class="mdi-alert-warning"></i> Do you really want to cancel this match?</p>
             <a {{action "hideCancelDiv"}} class="btn btn-default btn-raised">no</a>
-            <a {{action "cancelEvent" model.id}} class="btn btn-danger btn-raised">Yes, cancel</a>
+            <a {{action "cancelEvent" model.id}} rel="nofollow" class="btn btn-danger btn-raised">Yes, cancel</a>
         {{/if}}
     </div>
     {{#link-to 'event.share' model.id class="sharebutton btn btn-fab btn-raised mdi-social-share"}}{{/link-to}}
@@ -77,7 +77,7 @@
                         <td class="temp_img"><img src="{{model.weather_temperature_icon}}"></td>
                         <td class="temperature">{{model.weather_temperature}}°</td>
                         <td><img {{bind-attr src=model.weather_icon}}></td>
-                        <td class="weatherDescription">{{model.weather}}</td>
+                        <td class="weatherDescription">{{model.weather}}, <br>sunset at {{model.sunset}}</td>
 
                         <!--td class="weatherWindSpeed"><span class="wws_fig">{{model.weather_wind_speed}}</span><span class="wws_text">km/h<br>Wind</span></td>
                         <td class="turf"><img src="/icons/artificialturf.png"></td>

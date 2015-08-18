@@ -124,6 +124,8 @@ $f3->route('GET /events/@id',
                 $listOutputUsersFull[] = $l_value;
             }
 
+
+
             $d = array(
 
                 "id" => intval($value['id']),
@@ -133,6 +135,7 @@ $f3->route('GET /events/@id',
                 "weekday" => date("D",$value['evdate']),
                 "hour" => date("H:i",$value['evdate']),
                 "evdate_dif" => get_time_difference($value['evdate']),
+                "sunset" => getSunset($value['evdate']),
                 "description" => $value['description'],
                 "canceled" => ($value['canceled']?true:false),
                 "private" => ($value['private']?true:false),
@@ -200,6 +203,7 @@ $f3->route('GET /events',
                     "evdate_str" => dateFormat($value['evdate']),
                     "weekday" => date("D",$value['evdate']),
                     "hour" => date("H:i",$value['evdate']),
+                    "sunset" => getSunset($value['evdate']),
                     "evdate_dif" => get_time_difference($value['evdate']),
                     "description" => $value['description'],
                     "canceled" => ($value['canceled']?true:false),
@@ -712,4 +716,12 @@ function getWeatherIcon($icon) {
     //}
 
     return 'http://'.$_SERVER['HTTP_HOST'].($_SERVER['HTTP_HOST']=='trainingslist.dev'?'/API':'').'/icons/'.$iconpath;
+}
+
+function getSunset ($timestamp) {
+    $tz = new DateTimeZone('Europe/Berlin');
+    $dt = new DateTime("now", $tz);
+    $dt->setTimestamp(intval($timestamp));
+    $offset =  $dt->getOffset()/3600;
+    return date_sunset($timestamp,SUNFUNCS_RET_STRING,52.476929,13.41027,ini_get("date.sunset_zenith"),$offset);
 }

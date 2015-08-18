@@ -15,6 +15,7 @@ export default DS.Model.extend({
     weekday: DS.attr('string'),
     hour: DS.attr('string'),
     weather: DS.attr('string'),
+    sunset: DS.attr('string'),
     weather_icon: DS.attr('string'),
     weather_wind_speed: DS.attr('number'),
     weather_temperature: DS.attr('number'),

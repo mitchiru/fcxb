@@ -118,6 +118,24 @@ Ember.$.Resizable = Ember.Mixin.create( Ember.$.Base, {
 
 
 var player = Ember.View.extend(Ember.$.Draggable,{
+    init: function() {
+        this._super();
+        var view = this;
+
+        var resizeHandler = function() {
+            view.rerender();
+            view.set('factor',(Ember.$('body').width()/310));
+        };
+
+        this.set('resizeHandler', resizeHandler);
+        $(window).bind('resize', this.get('resizeHandler'));
+    },
+
+    willDestroy: function() {
+        $(window).unbind('resize', this.get('resizeHandler'));
+    },
+
+
     tagName: 'div',
     grid: [30,30],
     stack: ".player",
@@ -127,21 +145,23 @@ var player = Ember.View.extend(Ember.$.Draggable,{
     attributeBindings: ["style"],
     style: function() {
         if (this.get("pos_x") != 0 && this.get("pos_y") != 0) {
-            //var offset_x = Math.round(Ember.$(this.get('element')).position().left);
-            //var offset_y = Math.round(Ember.$(this.get('element')).position().top);
 
-            var pos_x = this.get("pos_x");
-            var pos_y = this.get("pos_y");
+            var pos_x = Math.ceil(this.get("pos_x")*this.get('factor'));
+            var pos_y = Math.ceil(this.get("pos_y")*this.get('factor'));
 
-            var offset_x = Math.round(pos_x*$('body').width())/800;
-            var offset_y = Math.round(pos_y*$('body').width())/700;
+            var margin_h = Math.ceil(this.get('factor')*60) - 60;
+            var margin_v = Math.ceil(this.get('factor')*15) - 15;
 
+            this.set('grid',[30*this.get('factor'),30*this.get('factor')]);
 
-            return "left: "+pos_x+"px; top: "+pos_y+'px';
+            return "left: "+pos_x+"px; top: "+pos_y+'px; margin:'+margin_v+'px '+margin_h+'px '+margin_v+'px '+margin_h+'px';
         } else {
             return '';
         }
     }.property('top','left','sub'),
+    factor: function () {
+        return Ember.$('body').width()/310;
+    }.property('player'),
     pos_y: function () {
         return this.get('player').get('pos_y');
     }.property('player'),
@@ -153,8 +173,8 @@ var player = Ember.View.extend(Ember.$.Draggable,{
     }.property('player'),
     stop: function(e) {
 
-        var pos_x = Math.round(Ember.$(this.get('element')).position().left);
-        var pos_y = Math.round(Ember.$(this.get('element')).position().top);
+        var pos_x = Math.ceil(((Ember.$(this.get('element')).position().left) / this.get('factor'))/30)*30;
+        var pos_y = Math.ceil(((Ember.$(this.get('element')).position().top) / this.get('factor'))/30)*30;
 
         this.set('pos_x',pos_x);
         this.set('pos_y',pos_y);

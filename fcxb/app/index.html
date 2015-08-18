@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
     <!--<?php print '-'.'->';
-        if (strlen($_SERVER['REQUEST_URI'])>1 && strstr($_SERVER['REQUEST_URI'],'/event/')!== false) {
     $d = explode('/',$_SERVER['REQUEST_URI']);
+        if (count($d)==2) {
 
-    $event_id = intval($d[2]);
+    $event_id = intval($d[1]);
     $api = @json_decode(file_get_contents('http://api.fcxb.de/events/'.$event_id),true);
 
     if (isset($api['events'][0]['name'])) {
