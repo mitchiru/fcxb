@@ -145,7 +145,7 @@ $f3->route('GET /events/@id',
                 "registrations" => $listOutputUsersFull
             );
 
-            $d = array_merge($d,retrieveWeatherForDay($value['evdate']));
+            $d = array_merge($d,@retrieveWeatherForDay($value['evdate']));
 
             $output['events'][] = $d;
         }
@@ -214,7 +214,7 @@ $f3->route('GET /events',
                     "registrations" => $listOutputUsersFull
                 );
 
-                $d = array_merge($d,retrieveWeatherForDay($value['evdate']));
+                $d = array_merge($d,@retrieveWeatherForDay($value['evdate']));
 
                 $output['events'][] = $d;
         }
@@ -672,12 +672,13 @@ function retrieveWeatherForDay ($day) {
     $weather = json_decode($weather,true);
 
     $todayWeather = '';
-    foreach($weather['list'] as $key => $value) {
 
-        if (date('d.m',$value['dt']) == date('d.m',$day)) {
-            $todayWeather = $value;
+    if (count($weather['list'])) {
+        foreach($weather['list'] as $key => $value) {
 
-
+            if (date('d.m',$value['dt']) == date('d.m',$day)) {
+                $todayWeather = $value;
+            }
         }
     }
 
@@ -704,7 +705,12 @@ function retrieveWeatherForDay ($day) {
 
         return $ret;
     } else {
-        return array();
+        return array(
+            'weather_temperature' => '',
+            'weather' => '',
+            'weather_icon' => '',
+            'weather_wind_speed' => '',
+        );
     }
     //http://openweathermap.org/img/w/10d.png
 }
