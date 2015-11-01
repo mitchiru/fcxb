@@ -109,19 +109,50 @@
             </div>
         </div>
         {{/if}}
-        {{#each registrations in sortedList}}
-            <div class="list-group-item" {{bind-attr data-registration=registrations.id}}>
+
+
+
+
+        {{#each sortedList as |registration index|}}
+
+            {{#if model.overbooked}}
+                {{#show-waitinglist-block index=index max_att=model.max_att registrations=model.registrations.length}}
+                    <div class="list-item">
+                        <div class="row-content">
+                            <h4 class="list-group-item-heading-input"><center>
+                                Waiting List
+                            </center></h4>
+                            <div class="progress">
+                                <div {{bind-attr class=model.bar_color style=model.bar_width}}></div>
+                            <div class="progress-bar progress-bar-danger" {{bind-attr style=model.overbooked_with}}></div>
+                    </div>
+                        </div>
+                    </div>
+                {{/show-waitinglist-block}}
+            {{/if}}
+
+            <div class="list-group-item" {{bind-attr data-registration=registration.id}}>
+
+                {{#is-on-waitinglist index=index max_att=model.max_att registrations=model.registrations.length}}
                 <div class="row-action-primary row-action-remove-member">
-                    <a {{action "removeConfirm" registrations.id}} class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-navigation-check"><div class="ripple-wrapper"></div></a>
+                    <a {{action "removeConfirm" registration.id}} class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-maps-local-cafe"><div class="ripple-wrapper"></div></a>
                 </div>
                 <div class="row-action-primary row-action-removed" style="display:none">
-                    <a {{action "removePlayer" registrations.id}} class="btn btn-default btn-fab btn-raised mdi-content-remove-circle"><div class="ripple-wrapper"></div></a>
+                    <a {{action "removePlayer" registration.id}} class="btn btn-default btn-fab btn-raised mdi-content-remove-circle"><div class="ripple-wrapper"></div></a>
                 </div>
-
+                {{/is-on-waitinglist}}
+                {{#else-on-waitinglist index=index max_att=model.max_att registrations=model.registrations.length}}
+                <div class="row-action-primary row-action-remove-member">
+                    <a {{action "removeConfirm" registration.id}} class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-navigation-check"><div class="ripple-wrapper"></div></a>
+                </div>
+                <div class="row-action-primary row-action-removed" style="display:none">
+                    <a {{action "removePlayer" registration.id}} class="btn btn-default btn-fab btn-raised mdi-content-remove-circle"><div class="ripple-wrapper"></div></a>
+                </div>
+                {{/else-on-waitinglist}}
 
                 <div class="row-content">
-                    <div class="least-content">{{registrations.crdate_dif}}</div>
-                    <h4 class="list-group-item-heading removeConfirm" {{action "removeConfirm" registrations.id}}>{{registrations.user}}</h4>
+                    <div class="least-content">{{registration.crdate_dif}}</div>
+                    <h4 class="list-group-item-heading removeConfirm" {{action "removeConfirm" registration.id}}>{{registration.user}}</h4>
                 </div>
             </div>
         {{/each}}

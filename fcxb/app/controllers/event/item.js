@@ -2,13 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
     sortedList: function() {
-        return Ember.ArrayProxy.createWithMixins(Ember.SortableMixin, {
+        return Ember.ArrayProxy.extend(Ember.SortableMixin).create({
             sortProperties: ['crdate'],
             sortAscending: false,
             content: this.get('model').get('registrations')
         });
 
     }.property('model'),
+
     isEditingName: false,
     isEditingDesc: false,
     isEditingMax: false,
