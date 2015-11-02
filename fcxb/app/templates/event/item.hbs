@@ -153,6 +153,9 @@
                 <div class="row-content">
                     <div class="least-content">{{registration.crdate_dif}}</div>
                     <h4 class="list-group-item-heading removeConfirm" {{action "removeConfirm" registration.id}}>{{registration.user}}</h4>
+                    {{#if registration.mp}}
+                    <small class="subline">{{registration.mp}} appearances on {{model.weekday}}</small>
+                    {{/if}}
                 </div>
             </div>
         {{/each}}

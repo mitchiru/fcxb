@@ -314,3 +314,9 @@ body:before{
     opacity: 0.8;
     z-index: 89;
 }
+
+small.subline {
+    top: -23px;
+    position: relative;
+    opacity: 0.3;
+}

@@ -84,7 +84,11 @@ $f3->route('GET /authenticate',
 
 $f3->route('GET /events/@id',
     function($f3) {
-        $f3->set('events',$f3->get('DB')->exec('SELECT * FROM events WHERE id = '.$f3->get('PARAMS.id')));
+        $f3->set('events',$f3->get('DB')->exec('
+            SELECT *,
+                DATE_FORMAT(FROM_UNIXTIME(evdate), "%a") AS weekday
+            FROM events
+            WHERE id = '.$f3->get('PARAMS.id')));
 
 
         $output = array();
@@ -113,12 +117,34 @@ $f3->route('GET /events/@id',
             $listOutputUsersFull = array();
 
             foreach ($f3->get('users') as $l_key => $l_value) {
+
+                $f3->set('matchesplayed',$f3->get('DB')->exec("
+SELECT count(LOWER(r.user)) as anzahl, LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday
+
+FROM events e
+INNER JOIN registrations r
+ON e.id = r.event_id
+
+WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
+AND LOWER(r.user) = '".$l_value['user']."'
+
+GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
+ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC"));
+
+
                 $l_value['id'] = intval($l_value['id']);
                 $l_value['pos_y'] = intval($l_value['pos_y']);
                 $l_value['pos_x'] = intval($l_value['pos_x']);
                 $l_value['sub'] = ($l_value['sub']?true:false);
                 $l_value['crdate'] = intval($l_value['crdate']);
                 $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
+
+                $l_value['mp'] = intval(0);
+
+                foreach ($f3->get('matchesplayed') as $mp_key => $mp_value) {
+                    $l_value['mp'] = intval($mp_value['anzahl']);
+                }
+
 
                 $listOutputUsers[] = $l_value['id'];
                 $listOutputUsersFull[] = $l_value;
@@ -156,7 +182,13 @@ $f3->route('GET /events/@id',
 
 $f3->route('GET /events',
 	function($f3) {
-        $f3->set('events',$f3->get('DB')->exec('SELECT * FROM events WHERE evdate > '.(time()-(6*3600)).' ORDER BY evdate ASC'));
+        $f3->set('events',$f3->get('DB')->exec('
+
+        SELECT *,
+
+                DATE_FORMAT(FROM_UNIXTIME(evdate), "%a") AS weekday
+        FROM events
+        WHERE evdate > '.(time()-(6*3600)).' ORDER BY evdate ASC'));
 
 
         $output = array('events'=>array());
@@ -185,12 +217,35 @@ $f3->route('GET /events',
                 $listOutputUsersFull = array();
 
                 foreach ($f3->get('users') as $l_key => $l_value) {
+
+
+                    $f3->set('matchesplayed',$f3->get('DB')->exec("
+SELECT count(LOWER(r.user)) as anzahl, LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday
+
+FROM events e
+INNER JOIN registrations r
+ON e.id = r.event_id
+
+WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
+AND LOWER(r.user) = '".$l_value['user']."'
+
+GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
+ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC"));
+
+
                     $l_value['id'] = intval($l_value['id']);
-                    $l_value['pos_x'] = intval($l_value['pos_x']);
                     $l_value['pos_y'] = intval($l_value['pos_y']);
+                    $l_value['pos_x'] = intval($l_value['pos_x']);
                     $l_value['sub'] = ($l_value['sub']?true:false);
                     $l_value['crdate'] = intval($l_value['crdate']);
                     $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
+
+                    $l_value['mp'] = intval(0);
+
+                    foreach ($f3->get('matchesplayed') as $mp_key => $mp_value) {
+                        $l_value['mp'] = intval($mp_value['anzahl']);
+                    }
+
 
                     $listOutputUsers[] = $l_value['id'];
                     $listOutputUsersFull[] = $l_value;
@@ -525,6 +580,9 @@ $f3->route('DELETE /registrations/@id',
     }
 );
 
+
+
+
 $f3->run();
 
 /* functions */
@@ -658,7 +716,7 @@ function retrieveWeather () {
         $weather = file_get_contents($weatherfile);
     } else {
         @unlink($weatherfile);
-        $weather = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?id=7290253&units=metric&cnt=7');
+        $weather = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?id=7290253&units=metric&cnt=7&APPID=0ec5e24d1dd39fda993df1f48d84311b');
         file_put_contents($weatherfile,$weather);
     }
 

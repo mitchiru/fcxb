@@ -7,5 +7,6 @@ export default DS.Model.extend({
     crdate_dif: DS.attr('string'),
     pos_x: DS.attr('number'),
     pos_y: DS.attr('number'),
-    sub: DS.attr('boolean')
+    sub: DS.attr('boolean'),
+    mp: DS.attr('number')
 });
