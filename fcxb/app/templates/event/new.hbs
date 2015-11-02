@@ -13,6 +13,15 @@
         <fieldset>
             <img src="/icons/navicon.png" class="forminfologo">
             <p><em style="opacity:0.6">This Doodle System was created to enable everyone to share public or private matches with other players.</em></p><br>
+
+
+            <div class="form-group">
+                <label for="inputSubject" class="col-lg-2 control-label">Create from template:</label>
+                {{#each template in templates}}
+                    <button class="btn btn-default btn-raised"{{action "useTemplate" template}}><i class="mdi-content-content-paste"></i> {{template.weekday}}<br>{{template.name}}<div class="ripple-wrapper"></div></button>
+                {{/each}}
+            </div>
+
             <div class="form-group">
                 <label for="inputSubject" class="col-lg-2 control-label">Match on next:</label>
                 <div class="col-lg-10">
@@ -79,6 +88,17 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Re-use</label>
+                <div class="col-lg-10">
+                    <div class="radio radio-primary">
+                        <label>
+                            <a class="pointer">{{input type="checkbox" checked=model.as_template class=toggle}}</a>
+                            Save this events settings as a reusable template
+                        </label>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
@@ -88,6 +108,6 @@
             </div>
         </fieldset>
     </form>
-    <p><em style="opacity:0.6"><i class="mdi-content-content-paste"></i>After you created a Doodle, you 'should to' copy the link and invite other players via E-Mail, Facebook or WhatsApp.</em></p>
+    <p><em style="opacity:0.6"><i class="mdi-content-content-paste"></i> After you created a Doodle, you 'should to' copy the link and invite other players via E-Mail, Facebook or WhatsApp.</em></p>
     </div>
 </div>

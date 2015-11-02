@@ -8,6 +8,7 @@ export default DS.Model.extend({
     description: DS.attr('string'),
     canceled: DS.attr('number'),
     private: DS.attr('number'),
+    as_template: DS.attr('boolean'),
     min_att: DS.attr('number'),
     max_att: DS.attr('number'),
     location: DS.attr('string'),

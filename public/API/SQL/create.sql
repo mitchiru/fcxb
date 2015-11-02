@@ -54,6 +54,21 @@ CREATE TABLE events (
   FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE
 );
 
+
+CREATE TABLE templates (
+  id        INTEGER AUTO_INCREMENT,
+  name      VARCHAR(60),
+  private   BOOLEAN NOT NULL DEFAULT FALSE,
+  weekday    VARCHAR(3),
+  description VARCHAR(255),
+  min_att   INTEGER,
+  max_att   INTEGER,
+  location  VARCHAR(255),
+
+  PRIMARY KEY (id)
+);
+
+
 CREATE TABLE event_lists (
   event_id INTEGER,
   list_id INTEGER,

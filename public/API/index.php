@@ -2,10 +2,20 @@
 // Kickstart the framework
 $f3=require('lib/base.php');
 #mitchiru_fcxb
+
+header('Content-Type: application/json');
+header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, X-Custom-Header, Content-Type, Accept");
+
 if ($_SERVER['HTTP_HOST']=='trainingslist.dev') {
+    ini_set('display_errors',0);
+    error_reporting(E_ALL|E_STRICT);
+
     $f3->set('DB',new DB\SQL('mysql:host=localhost;port=3306;dbname=fcxb','fcxb','fcxb' ));
     $f3->set('PATH','API/');
     header("Access-Control-Allow-Origin: http://localhost:4200");
+
+
 } else {
     $f3->set('DB',new DB\SQL('mysql:host=localhost;port=3306;dbname=mitchiru_fcxb','mitchiru','shee3gie3ohgh4iqu3t' ));
     $f3->set('PATH','');
@@ -13,10 +23,6 @@ if ($_SERVER['HTTP_HOST']=='trainingslist.dev') {
 }
 $f3->set('DEBUG',1);
 $f3->config('config.ini');
-
-header('Content-Type: application/json');
-header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, X-Custom-Header, Content-Type, Accept");
 
 date_default_timezone_set('Europe/Berlin');
 
@@ -278,6 +284,19 @@ ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC")
 	}
 );
 
+
+$f3->route('GET /templates',
+    function($f3) {
+        $f3->set('templates',$f3->get('DB')->exec('SELECT * FROM templates'));
+
+        $output = array(
+            'templates' => $f3->get('templates')
+        );
+
+        echo (json_encode($output));
+    }
+);
+
 $f3->route('GET /groups',
     function($f3) {
         $f3->set('groups',$f3->get('DB')->exec('SELECT * FROM groups'));
@@ -297,6 +316,27 @@ $f3->route('POST /events',function($f3) {
 
     if ($POST->event->weekday=='') {
         $POST->event->weekday = 'Mon';
+    }
+
+
+    if ($POST->event->as_template) {
+        $f3->get('DB')->exec('INSERT INTO templates (
+            name,
+            weekday,
+            description,
+            min_att,
+            max_att,
+            private,
+            location
+        ) VALUES (
+            "'.mres($POST->event->name).'",
+            "'.mres($POST->event->weekday).'",
+            "'.mres($POST->event->description).'",
+            "'.intval($POST->event->min_att).'",
+            "'.intval($POST->event->max_att).'",
+            "'.intval($POST->event->private).'",
+            "'.mres($POST->event->location).'"
+        )');
     }
 
     $f3->get('DB')->exec('INSERT INTO events (
@@ -348,6 +388,13 @@ $f3->route('POST /events/@id',function($f3) {
 $f3->route('DELETE /events/@id',function($f3) {
     //delete event
     $f3->get('DB')->exec('DELETE FROM events WHERE id = '.intval($f3->get('PARAMS.id')));
+
+    echo '{}';
+});
+
+$f3->route('DELETE /templates/@id',function($f3) {
+    //delete events_template
+    $f3->get('DB')->exec('DELETE FROM templates WHERE id = '.intval($f3->get('PARAMS.id')));
 
     echo '{}';
 });

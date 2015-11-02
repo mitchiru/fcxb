@@ -320,3 +320,15 @@ small.subline {
     position: relative;
     opacity: 0.3;
 }
+
+.template-box {
+    width: 100px;
+    height: 100px;
+    margin: 0 16px;
+    display: block;
+    float: left;
+}
+
+.template-box div {
+    margin: 16px;
+}
