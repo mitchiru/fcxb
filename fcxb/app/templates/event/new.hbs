@@ -17,7 +17,7 @@
 
             <div class="form-group">
                 <label for="inputSubject" class="col-lg-2 control-label">Create from template:</label>
-                {{#each template in templates}}
+                {{#each templates as |template|}}
                     <button class="btn btn-default btn-raised"{{action "useTemplate" template}}><i class="mdi-content-content-paste"></i> {{template.weekday}}<br>{{template.name}}<div class="ripple-wrapper"></div></button>
                 {{/each}}
             </div>
@@ -76,13 +76,13 @@
                 <div class="col-lg-10">
                     <div class="radio radio-primary">
                         <label {{action "setPublic"}}>
-                            <a class="pointer"><div {{bind-attr class=publicClass}}><div class="ripple-wrapper"></div></div></a>
+                            <a class="pointer"><div class="{{publicClass}}"><div class="ripple-wrapper"></div></div></a>
                             Yes, everybody can play
                         </label>
                     </div>
                     <div class="radio radio-primary">
                         <label {{action "setPrivate"}}>
-                            <a class="pointer"><div {{bind-attr class=privateClass}}><div class="ripple-wrapper"></div></div></a>
+                            <a class="pointer"><div class="{{privateClass}}"><div class="ripple-wrapper"></div></div></a>
                             No, only people who receive the direct link to this doodle
                         </label>
                     </div>

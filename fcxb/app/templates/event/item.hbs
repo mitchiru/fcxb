@@ -32,7 +32,7 @@
     <div class="mapsubsitute">
     </div>
     <a href="{{model.google_maps_link}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{model.location}}&zoom=15&scale=false&size=1000x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:blue%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
-    <div class="well"  {{bind-attr data-canceled=model.canceled}}>
+    <div class="well" data-canceled="{{model.canceled}}">
         <div class="list-group">
             <div class="list-group-item list-group-item-heading">
                 {{#if isEditingName}}
@@ -55,8 +55,8 @@
                 </center></h3>
             </div>
             <div class="progress">
-                <div {{bind-attr class=model.bar_color style=model.bar_width}}></div>
-                <div class="progress-bar progress-bar-danger" {{bind-attr style=model.overbooked_with}}></div>
+                <div class="{{model.bar_color}}" style="{{model.bar_width}}"></div>
+                <div class="progress-bar progress-bar-danger" style="{{model.overbooked_with}}"></div>
             </div>
         </div>
         <div class="list-group">
@@ -76,7 +76,7 @@
                     <tr>
                         <td class="temp_img"><img src="{{model.weather_temperature_icon}}"></td>
                         <td class="temperature">{{model.weather_temperature}}°</td>
-                        <td><img {{bind-attr src=model.weather_icon}}></td>
+                        <td><img src="{{model.weather_icon}}"></td>
                         <td class="weatherDescription">{{model.weather}}, <br>sunset at {{model.sunset}}</td>
 
                         <!--td class="weatherWindSpeed"><span class="wws_fig">{{model.weather_wind_speed}}</span><span class="wws_text">km/h<br>Wind</span></td>
@@ -123,15 +123,15 @@
                                 Waiting List
                             </center></h4>
                             <div class="progress">
-                                <div {{bind-attr class=model.bar_color style=model.bar_width}}></div>
-                            <div class="progress-bar progress-bar-danger" {{bind-attr style=model.overbooked_with}}></div>
+                                <div class="{{model.bar_color}}" style="{{model.bar_width}}"></div>
+                            <div class="progress-bar progress-bar-danger" style="{{model.overbooked_with}}"></div>
                     </div>
                         </div>
                     </div>
                 {{/show-waitinglist-block}}
             {{/if}}
 
-            <div class="list-group-item" {{bind-attr data-registration=registration.id}}>
+            <div class="list-group-item" data-registration="{{registration.id}}">
 
                 {{#is-on-waitinglist index=index max_att=model.max_att registrations=model.registrations.length}}
                 <div class="row-action-primary row-action-remove-member">

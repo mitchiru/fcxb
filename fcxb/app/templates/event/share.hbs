@@ -8,11 +8,11 @@
     </div>
 </div>
 <div class="event-detail">
-<div class="well"  {{bind-attr data-canceled=model.canceled}}>
+<div class="well" data-canceled="{{model.canceled}}">
 <div class="list-group">
     <div class="list-group-item list-group-item-heading">
         {{#if isEditingName}}
-        {{input value=bufferedName escape-press='cancelEditingName' focus-out='doneEditingName' insert-newline='doneEditingName' placeholder="Name" class="form-control input-heading" autocomplete="off"}}
+            {{input value=bufferedName escape-press='cancelEditingName' focus-out='doneEditingName' insert-newline='doneEditingName' placeholder="Name" class="form-control input-heading" autocomplete="off"}}
         {{else}}
         <h2  {{action 'startEditingName'}}>{{model.name}}</h2>
         {{/if}}
@@ -31,8 +31,8 @@
         </center></h3>
     </div>
     <div class="progress">
-        <div {{bind-attr class=model.bar_color style=model.bar_width}}></div>
-        <div class="progress-bar progress-bar-danger" {{bind-attr style=model.overbooked_with}}></div>
+        <div class="{{model.bar_color}}" style="{{model.bar_width}}"></div>
+        <div class="progress-bar progress-bar-danger" style="{{model.overbooked_with}}"></div>
     </div>
     </div>
 </div>

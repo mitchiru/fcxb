@@ -9,8 +9,8 @@
 </div>
 <div class="pitch">
     <div class="lineup">
-        {{#each registration in sortedList}}
-        {{view "player" player=registration}}
+        {{#each sortedList as |registration|}}
+            {{view "player" player=registration}}
         {{/each}}
     </div>
     <img src="/icons/pitch.svg">
