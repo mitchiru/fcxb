@@ -135,7 +135,9 @@ var player = Ember.View.extend(Ember.$.Draggable,{
         $(window).unbind('resize', this.get('resizeHandler'));
     },
 
-
+    user: function () {
+        return this.get("user");
+    },
     tagName: 'div',
     grid: [30,30],
     stack: ".player",

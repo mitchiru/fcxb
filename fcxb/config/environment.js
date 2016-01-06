@@ -6,15 +6,14 @@ module.exports = function(environment) {
         environment: environment,
         baseURL: '/',
         locationType: 'auto',
-        //API: 'http://trainingslist.dev/API',
-        API: 'http://api.fcxb.de',
+        API: 'http://test.fcxb.de/',
         contentSecurityPolicy: {
             //https://github.com/rwjblue/ember-cli-content-security-policy
             'default-src': "'self'",
-            'script-src': "'self' 'unsafe-inline' maxcdn.bootstrapcdn.com", // Allow scripts from https://cdn.mxpnl.com
+            'script-src': "'self' 'unsafe-inline' 127.0.0.1:35729 www.fussball.de maxcdn.bootstrapcdn.com", // Allow scripts from https://cdn.mxpnl.com
             'font-src': "'self' http://fonts.googleapis.com http://maxcdn.bootstrapcdn.com", // Allow fonts to be loaded from http://fonts.gstatic.com
-            'connect-src': "'self' trainingslist.dev api.fcxb.de", // Allow data (ajax/websocket) from api.mixpanel.com and custom-api.local
-            'img-src': "'self' https://maps.googleapis.com trainingslist.dev api.fcxb.de",
+            'connect-src': "'self' 127.0.0.1 api.fcxb.de test.fcxb.de trainingslist.dev www.fussball.de", // Allow data (ajax/websocket) from api.mixpanel.com and custom-api.local
+            'img-src': "'self' https://maps.googleapis.com trainingslist.dev api.fcxb.de test.fcxb.de",
             'style-src': "'self' 'unsafe-inline' http://fonts.googleapis.com http://maxcdn.bootstrapcdn.com", // Allow inline styles and loaded CSS from http://fonts.googleapis.com
             'media-src': "'self' https://maps.googleapis.com",
             'report-uri': "'self'"
@@ -40,6 +39,8 @@ module.exports = function(environment) {
         ENV.APP.LOG_TRANSITIONS = false;
         ENV.APP.LOG_TRANSITIONS_INTERNAL = false;
         ENV.APP.LOG_VIEW_LOOKUPS = true;
+        //ENV.API = 'http://trainingslist.dev/API';
+        ENV.API = 'http://test.fcxb.de';
     }
     //ENV.APP.LOG_RESOLVER = true;
     //ENV.APP.LOG_ACTIVE_GENERATION = true;

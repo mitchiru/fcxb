@@ -49,6 +49,7 @@ CREATE TABLE events (
   min_att   INTEGER,
   max_att   INTEGER,
   location  VARCHAR(255),
+  score     VARCHAR(255),
 
   PRIMARY KEY (id),
   FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE
@@ -87,6 +88,8 @@ CREATE TABLE registrations (
   sub       BOOLEAN DEFAULT false,
   pos_x     INTEGER,
   pos_y     INTEGER,
+  goals     TINYINT,
+  assists   TINYINT,
 
   PRIMARY KEY (id),
   FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE

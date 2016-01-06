@@ -16,10 +16,14 @@
 
 
             <div class="form-group">
-                <label for="inputSubject" class="col-lg-2 control-label">Create from template:</label>
-                {{#each templates as |template|}}
-                    <button class="btn btn-default btn-raised"{{action "useTemplate" template}}><i class="mdi-content-content-paste"></i> {{template.weekday}}<br>{{template.name}}<div class="ripple-wrapper"></div></button>
-                {{/each}}
+                <label class="col-lg-2 control-label">Create from template:</label>
+
+                    {{#each templates as |template|}}
+                        <div class="col-lg-10">
+                            <button class="btn btn-default btn-raised" {{action "useTemplate" template}}><small>{{template.weekday}} {{template.name}}</small><div class="ripple-wrapper"></div></button>
+                        </div>
+                    {{/each}}
+
             </div>
 
             <div class="form-group">

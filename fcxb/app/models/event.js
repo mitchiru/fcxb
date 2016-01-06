@@ -5,6 +5,7 @@ export default DS.Model.extend({
     evdate: DS.attr('number'),
     evdate_str: DS.attr('string'),
     evdate_dif: DS.attr('string'),
+    ended: DS.attr('boolean'),
     description: DS.attr('string'),
     canceled: DS.attr('number'),
     private: DS.attr('number'),
@@ -12,7 +13,11 @@ export default DS.Model.extend({
     min_att: DS.attr('number'),
     max_att: DS.attr('number'),
     location: DS.attr('string'),
-    registrations: DS.hasMany('registrations', {async: false}),
+    score: DS.attr('string'),
+    hasScore: function () {
+        return (this.get('score')!='' && this.get('score')!= '0:0');
+    }.property('score'),
+    registrations: DS.hasMany('registrations', {async: true}),
     weekday: DS.attr('string'),
     hour: DS.attr('string'),
     weather: DS.attr('string'),

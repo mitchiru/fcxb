@@ -14,4 +14,6 @@ export default Router.map(function() {
   this.route('event.lineup', { path: '/l/:event_id' });
   this.route('event.new');
 
+  this.route('league');
+  this.route('tally');
 });

@@ -12,12 +12,13 @@
     $api = @json_decode(file_get_contents('http://api.fcxb.de/events/'.$event_id),true);
 
     if (isset($api['events'][0]['name'])) {
-    print '<title>FCXB Doodle for football on '.$api['events'][0]['name'].'</title>';
+        print '<title>FCXB Doodle for football on '.$api['events'][0]['name'].'</title>';
+        print '<meta property="og:description" content="'.$api['events'][0]['description'].'" />';
     } else {
-    print '<title>FCXB Doodle</title>';
+        print '<title>FCXB Doodle</title>';
     }
     } else {
-    print '<title>FCXB Doodle</title>';
+        print '<title>FCXB Doodle</title>';
     }
     print '<!-'.'-'; ?>-->
 

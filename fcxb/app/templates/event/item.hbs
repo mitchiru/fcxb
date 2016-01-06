@@ -31,7 +31,18 @@
     {{#link-to 'event.lineup' model.id class="lineupbutton btn btn-default btn-fab btn-raised mdi-action-grade"}}{{/link-to}}
     <div class="mapsubsitute">
     </div>
-    <a href="{{model.google_maps_link}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{model.location}}&zoom=15&scale=false&size=1000x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:blue%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
+    {{#if model.ended}}
+        <div class="endscore">
+            {{#if isEditingScore}}
+                {{input id="input-score" value=bufferedScore escape-press='cancelEditingScore' focus-out='doneEditingScore' insert-newline='doneEditingScore' placeholder="0:0" class="form-control input-score" autocomplete="off"}}
+            {{else}}
+                <h1 {{action 'startEditingScore'}}>{{model.score}}</h1>
+            {{/if}}
+        </div>
+    {{else}}
+        <a href="{{model.google_maps_link}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{model.location}}&zoom=15&scale=false&size=1000x200&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:blue%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
+    {{/if}}
+
     <div class="well" data-canceled="{{model.canceled}}">
         <div class="list-group">
             <div class="list-group-item list-group-item-heading">
@@ -71,6 +82,9 @@
                     {{/if}}
                 {{/if}}
 
+
+                {{#if model.ended}}
+                {{else}}
                 {{#if model.weather}}
                 <table class="weather">
                     <tr>
@@ -87,6 +101,7 @@
                     </tr>
                 </table>
                 {{/if}}
+                {{/if}}
             </div>
         </div>
     </div>
@@ -94,7 +109,7 @@
     <div id="memberlist" class="list-group">
         {{#if model.canceled}}
         {{else}}
-        <div class="list-group-item">
+        <div class="list-group-item addMember">
             <div class="row-action-primary row-action-remove-member">
                 {{#if inputAddPlayer}}
                 <a {{action "focusInput"}} class="btn btn-default btn-fab btn-raised mdi-content-add  btn-success"><div class="ripple-wrapper"></div></a>
@@ -111,8 +126,6 @@
         {{/if}}
 
 
-
-
         {{#each sortedList as |registration index|}}
 
             {{#if model.overbooked}}
@@ -124,8 +137,11 @@
                             </center></h4>
                             <div class="progress">
                                 <div class="{{model.bar_color}}" style="{{model.bar_width}}"></div>
-                            <div class="progress-bar progress-bar-danger" style="{{model.overbooked_with}}"></div>
-                    </div>
+                                <div class="progress-bar progress-bar-danger" style="{{model.overbooked_with}}"></div>
+                            </div>
+                            <h4 class="list-group-item-heading-input"><center>
+                                Playing
+                            </center></h4>
                         </div>
                     </div>
                 {{/show-waitinglist-block}}
@@ -134,28 +150,81 @@
             <div class="list-group-item" data-registration="{{registration.id}}">
 
                 {{#is-on-waitinglist index=index max_att=model.max_att registrations=model.registrations.length}}
+                {{#if model.ended}}
+                    <div class="row-action-primary ">
+                        <a class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-navigation-check"><div class="ripple-wrapper"></div></a>
+                    </div>
+                {{else}}
                 <div class="row-action-primary row-action-remove-member">
                     <a {{action "removeConfirm" registration.id}} class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-maps-local-cafe"><div class="ripple-wrapper"></div></a>
                 </div>
                 <div class="row-action-primary row-action-removed" style="display:none">
                     <a {{action "removePlayer" registration.id}} class="btn btn-default btn-fab btn-raised mdi-content-remove-circle"><div class="ripple-wrapper"></div></a>
                 </div>
+                {{/if}}
                 {{/is-on-waitinglist}}
+
                 {{#else-on-waitinglist index=index max_att=model.max_att registrations=model.registrations.length}}
+                {{#if model.ended}}
+                <div class="row-action-primary">
+                    <a class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-navigation-check"><div class="ripple-wrapper"></div></a>
+                </div>
+                {{else}}
                 <div class="row-action-primary row-action-remove-member">
                     <a {{action "removeConfirm" registration.id}} class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-navigation-check"><div class="ripple-wrapper"></div></a>
                 </div>
                 <div class="row-action-primary row-action-removed" style="display:none">
                     <a {{action "removePlayer" registration.id}} class="btn btn-default btn-fab btn-raised mdi-content-remove-circle"><div class="ripple-wrapper"></div></a>
                 </div>
+                {{/if}}
+
                 {{/else-on-waitinglist}}
 
                 <div class="row-content">
-                    <div class="least-content">{{registration.crdate_dif}}</div>
-                    <h4 class="list-group-item-heading removeConfirm" {{action "removeConfirm" registration.id}}>{{registration.user}}</h4>
+                    <div class="least-content playerAddInfo">{{registration.crdate_dif}}</div>
+                    <h4 class="list-group-item-heading removeConfirm" {{action "removeConfirm" registration.id}}>{{registration.user}}&nbsp;&nbsp;
+                        {{#increment-for times=registration.goals }}
+                        <img src="icons/goal.png" width="20">
+                        {{/increment-for}}
+                        {{#increment-for times=registration.assists }}
+                        <img src="icons/goal.png" width="10">
+                        {{/increment-for}}
+                    </h4>
                     {{#if registration.mp}}
-                    <small class="subline">{{registration.mp}} appearances on {{model.weekday}}</small>
+                    <small class="subline playerAddInfo">{{registration.mp}} appearances on {{model.weekday}}</small>
                     {{/if}}
+
+                    {{#if registration.goals}}
+                    <small class="subline playerAddInfo">
+                        {{registration.goals}} goals today</small>
+                    {{/if}}
+
+                    {{#if registration.goals_total}}
+                    <small class="subline playerAddInfo">{{registration.goals_total}} goals total</small>
+                    {{/if}}
+
+                    <div class="row-action-goals playerAddInfo">
+                        <table>
+                            <tr>
+                                <td>Goals:</td>
+                                <td>Assists:</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a {{action "removeGoal" registration.id}} class="removeGoal goalActions"><img src="icons/goals.png"><span class="goals">{{registration.goals}}</span><span class="topaction">-</span></a>
+                                    <a {{action "addGoal" registration.id}} class="addGoal goalActions"><img src="icons/goal.png"><span class="topaction">+</span></a>
+                                    <br>
+                                </td>
+                                <td>
+                                    <a {{action "removeAssist" registration.id}} class="removeGoal goalActions"><img src="icons/goals.png" width="20"><span class="goals">{{registration.assists}}</span><span class="topaction">-</span></a>
+                                    <a {{action "addAssist" registration.id}} class="addGoal goalActions"><img src="icons/goal.png" width="15"><span class="topaction">+</span></a>
+                                    <br>
+                                    <br>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         {{/each}}

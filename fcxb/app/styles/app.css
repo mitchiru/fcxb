@@ -46,6 +46,10 @@ span.navbar-full {
     margin-top: 10px;
 }
 
+.list-group .list-group-item-heading h2 img {
+    display: inline;
+}
+
 .event-list {
     margin-top: 20px;
 }
@@ -155,7 +159,7 @@ textarea.desc-textarea {
 }
 .navbar .navbar-right {
     margin: 5px 5px 5px 0;
-    padding: 10px 15px 10px 0;
+    padding: 10px 6px 10px 0;
     float: right;
 }
 
@@ -321,14 +325,103 @@ small.subline {
     opacity: 0.3;
 }
 
-.template-box {
-    width: 100px;
-    height: 100px;
-    margin: 0 16px;
-    display: block;
-    float: left;
+.row-action-goals {
+    display: none;
 }
 
-.template-box div {
-    margin: 16px;
+.goalActions {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.goalActions span {
+    position: relative;
+    font-weight: bold;
+    font-size: 10px;
+    display:inline-block;
+}
+
+.goalActions span.goals {
+    color: black;
+    top: 15px;
+    left: -1px;
+}
+
+.goalActions span.topaction {
+    visibility: hidden;
+    top: -13px;
+    left: -5px;
+    color: red;
+}
+
+.goalActions:hover span.topaction {
+    visibility: visible;
+}
+
+.addGoal {
+    opacity: 0.5;
+}
+
+.addGoal span.topaction {
+    color: green;
+    left: -3px;
+}
+
+.endscore {
+    width: 100%;
+    text-align: center;
+    margin: 50px 0;
+}
+
+.endscore h1 {
+    font-size: 120px;
+    font-weight: bold;
+}
+
+
+input#input-score {
+    font-size: 120px;
+    width: 100%;
+    display: inline;
+    height: auto;
+    text-align: center;
+    font-weight: bold;
+}
+
+.leagueframe {
+    width: 100%;
+    height: 800px;
+    max-width: 763px;
+    border: 0;
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        width: 100%;
+        margin: 0!important;
+        padding: 0 !important;
+    }
+}
+
+
+@media print {
+    #memberlist .list-group-item {
+        width: 32%;
+        float: left;
+    }
+
+    .lineupbutton,
+    .sharebutton,
+    .navbar-info,
+    #memberlist .addMember,
+    #memberlist .playerAddInfo,
+    #memberlist .least-content {
+        display: none;
+    }
+
+
+}
+
+.event-list .ended {
+    opacity: 0.2;
 }

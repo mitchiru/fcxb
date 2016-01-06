@@ -16,6 +16,11 @@ if ($_SERVER['HTTP_HOST']=='trainingslist.dev') {
     header("Access-Control-Allow-Origin: http://localhost:4200");
 
 
+} else if ($_SERVER['HTTP_HOST']=='test.fcxb.de') {
+    $f3->set('DB',new DB\SQL('mysql:host=localhost;port=3306;dbname=mitchiru_fcxb_test','mitchiru','shee3gie3ohgh4iqu3t' ));
+    $f3->set('PATH','');
+    header("Access-Control-Allow-Origin: *");
+
 } else {
     $f3->set('DB',new DB\SQL('mysql:host=localhost;port=3306;dbname=mitchiru_fcxb','mitchiru','shee3gie3ohgh4iqu3t' ));
     $f3->set('PATH','');
@@ -88,6 +93,9 @@ $f3->route('GET /authenticate',
     }
 );
 
+
+
+
 $f3->route('GET /events/@id',
     function($f3) {
         $f3->set('events',$f3->get('DB')->exec('
@@ -116,7 +124,7 @@ $f3->route('GET /events/@id',
 
             //retrieve users
             $f3->set('users',$f3->get('DB')->exec('
-                    SELECT id, user, crdate, pos_x, pos_y, sub
+                    SELECT id, user, crdate, pos_x, pos_y, sub, goals, assists
                     FROM registrations eu
                     WHERE eu.event_id = '.$value['id'].''));
             $listOutputUsers = array();
@@ -125,7 +133,11 @@ $f3->route('GET /events/@id',
             foreach ($f3->get('users') as $l_key => $l_value) {
 
                 $f3->set('matchesplayed',$f3->get('DB')->exec("
-SELECT count(LOWER(r.user)) as anzahl, LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday
+SELECT  count(LOWER(r.user)) as anzahl,
+        LOWER(r.user),
+        DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday,
+        SUM(r.goals) as goals_total,
+        SUM(r.assists) AS assists_total
 
 FROM events e
 INNER JOIN registrations r
@@ -141,6 +153,8 @@ ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC")
                 $l_value['id'] = intval($l_value['id']);
                 $l_value['pos_y'] = intval($l_value['pos_y']);
                 $l_value['pos_x'] = intval($l_value['pos_x']);
+                $l_value['goals'] = intval($l_value['goals']);
+                $l_value['assists'] = intval($l_value['assists']);
                 $l_value['sub'] = ($l_value['sub']?true:false);
                 $l_value['crdate'] = intval($l_value['crdate']);
                 $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
@@ -148,6 +162,8 @@ ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC")
                 $l_value['mp'] = intval(0);
 
                 foreach ($f3->get('matchesplayed') as $mp_key => $mp_value) {
+                    $l_value['goals_total'] = intval($mp_value['goals_total']);
+                    $l_value['assists_total'] = intval($mp_value['assists_total']);
                     $l_value['mp'] = intval($mp_value['anzahl']);
                 }
 
@@ -164,6 +180,7 @@ ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC")
                 "name" => $value['name'],
                 "evdate" => intval($value['evdate']),
                 "evdate_str" => dateFormat($value['evdate']),
+                "ended" => (($value['evdate']+7200)<time()?true:false),
                 "weekday" => date("D",$value['evdate']),
                 "hour" => date("H:i",$value['evdate']),
                 "evdate_dif" => get_time_difference($value['evdate']),
@@ -174,6 +191,7 @@ ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC")
                 "min_att" => intval($value['min_att']),
                 "max_att" => intval($value['max_att']),
                 "location" => $value['location'],
+                "score" => $value['score'],
                 "registrations" => $listOutputUsersFull
             );
 
@@ -187,101 +205,176 @@ ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC")
 );
 
 $f3->route('GET /events',
-	function($f3) {
+    function($f3) {
+        /*
         $f3->set('events',$f3->get('DB')->exec('
 
         SELECT *,
-
+                CASE WHEN LENGTH(score) > 0 THEN
+                    CASE WHEN score != "0:0" THEN evdate END
+                ELSE NOW()*2 END AS evdate2,
                 DATE_FORMAT(FROM_UNIXTIME(evdate), "%a") AS weekday
         FROM events
-        WHERE evdate > '.(time()-(6*3600)).' ORDER BY evdate ASC'));
+        WHERE evdate > '.(time()-(6*3600)).'
+        OR    (LENGTH(score) > 0 AND score != "0:0")
+        ORDER BY evdate DESC
 
+        '));
+
+        */
+
+        $f3->set('events',$f3->get('DB')->exec('
+
+        SELECT *,
+                evdate as evdate2,
+                DATE_FORMAT(FROM_UNIXTIME(evdate), "%a") AS weekday,
+                false AS oldie
+        FROM events
+        WHERE evdate > '.(time()-(24*3600)).'
+        ORDER BY evdate DESC
+
+        '));
+
+        $f3->set('oldevents',$f3->get('DB')->exec('
+
+        SELECT *,
+                (evdate * -1)+NOW() as evdate2,
+                DATE_FORMAT(FROM_UNIXTIME(evdate), "%a") AS weekday,
+                true AS oldie
+        FROM events
+        WHERE evdate < '.(time()-(24*3600)).'
+        AND    (LENGTH(score) > 0 AND score != "0:0")
+        ORDER BY evdate ASC
+
+        '));
+
+        $eventsmerge = array();
+        foreach ($f3->get('events') as $key => $value) {
+            $eventsmerge[] = $value;
+        }
+        foreach ($f3->get('oldevents') as $key => $value) {
+            $eventsmerge[] = $value;
+        }
 
         $output = array('events'=>array());
-        foreach ($f3->get('events') as $key => $value) {
 
-                //retrieve lists
-                $f3->set('lists',$f3->get('DB')->exec('
-                    SELECT l.id,
-                           l.name
-                    FROM event_lists el
-                        INNER JOIN lists l
-                            ON l.id = el.list_id
-                    WHERE el.event_id = '.$value['id'].''));
-                $listOutputId = array();
-                foreach ($f3->get('lists') as $l_key => $l_value) {
-                    $output['lists'][] = $l_value;
-                    $listOutputId[] = $l_value['id'];
+        foreach ($eventsmerge as $key => $value) {
+
+            //retrieve lists
+            $f3->set('lists',$f3->get('DB')->exec('
+                        SELECT l.id,
+                               l.name
+                        FROM event_lists el
+                            INNER JOIN lists l
+                                ON l.id = el.list_id
+                        WHERE el.event_id = '.$value['id'].''));
+            $listOutputId = array();
+            foreach ($f3->get('lists') as $l_key => $l_value) {
+                $output['lists'][] = $l_value;
+                $listOutputId[] = $l_value['id'];
+            }
+
+            //retrieve users
+            $f3->set('users',$f3->get('DB')->exec('
+                        SELECT id, user, crdate,pos_x,pos_y,sub,goals,assists
+                        FROM registrations eu
+                        WHERE eu.event_id = '.$value['id'].''));
+            $listOutputUsers = array();
+            $listOutputUsersFull = array();
+
+            foreach ($f3->get('users') as $l_key => $l_value) {
+
+
+                $f3->set('matchesplayed',$f3->get('DB')->exec("
+    SELECT  COUNT(LOWER(r.user)) as anzahl,
+            LOWER(r.user),
+            DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday,
+            SUM(r.goals) as goals_total,
+            SUM(r.assists) AS assists_total
+
+    FROM events e
+    INNER JOIN registrations r
+    ON e.id = r.event_id
+
+    WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
+    AND LOWER(r.user) = '".$l_value['user']."'
+
+    GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
+    ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC"));
+
+
+                $f3->set('goals',$f3->get('DB')->exec("
+    SELECT  LOWER(r.user),
+            SUM(r.goals) as goals_total,
+            SUM(r.assists) AS assists_total
+
+    FROM events e
+    INNER JOIN registrations r
+    ON e.id = r.event_id
+
+    WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
+    AND LOWER(r.user) = '".$l_value['user']."'
+
+    GROUP BY LOWER(r.user)"));
+
+
+
+                $l_value['id'] = intval($l_value['id']);
+                $l_value['pos_y'] = intval($l_value['pos_y']);
+                $l_value['pos_x'] = intval($l_value['pos_x']);
+                $l_value['sub'] = ($l_value['sub']?true:false);
+                $l_value['goals'] = intval($l_value['goals']);
+                $l_value['assists'] = intval($l_value['assists']);
+                $l_value['crdate'] = intval($l_value['crdate']);
+                $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
+
+                $l_value['mp'] = intval(0);
+
+                foreach ($f3->get('matchesplayed') as $mp_key => $mp_value) {
+                    $l_value['goals_total'] = intval($mp_value['goals_total']);
+                    $l_value['assists_total'] = intval($mp_value['assists_total']);
+                    $l_value['mp'] = intval($mp_value['anzahl']);
                 }
 
-                //retrieve users
-                $f3->set('users',$f3->get('DB')->exec('
-                    SELECT id, user, crdate,pos_x,pos_y,sub
-                    FROM registrations eu
-                    WHERE eu.event_id = '.$value['id'].''));
-                $listOutputUsers = array();
-                $listOutputUsersFull = array();
 
-                foreach ($f3->get('users') as $l_key => $l_value) {
+                $listOutputUsers[] = $l_value['id'];
+                $listOutputUsersFull[] = $l_value;
+            }
 
+            if ($value['oldie']) {
+                //$listOutputUsers = $listOutputUsers;
+                //$listOutputUsersFull = $listOutputUsers;
+            } else {
 
-                    $f3->set('matchesplayed',$f3->get('DB')->exec("
-SELECT count(LOWER(r.user)) as anzahl, LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday
+            }
 
-FROM events e
-INNER JOIN registrations r
-ON e.id = r.event_id
+            $d = array(
+                "id" => intval($value['id']),
+                "name" => $value['name'],
+                "evdate" => intval($value['evdate2']),
+                "evdate_str" => dateFormat($value['evdate']),
+                "ended" => (($value['evdate']+7200) < time()?true:false),
+                "weekday" => date("D",$value['evdate']),
+                "hour" => date("H:i",$value['evdate']),
+                "sunset" => getSunset($value['evdate']),
+                "evdate_dif" => get_time_difference($value['evdate']),
+                "description" => $value['description'],
+                "canceled" => ($value['canceled']?true:false),
+                "private" => ($value['private']?true:false),
+                "min_att" => intval($value['min_att']),
+                "max_att" => intval($value['max_att']),
+                "location" => $value['location'],
+                "score" => $value['score'],
+                "registrations" => $listOutputUsersFull
+            );
 
-WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
-AND LOWER(r.user) = '".$l_value['user']."'
+            $d = array_merge($d,@retrieveWeatherForDay($value['evdate']));
 
-GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
-ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC"));
-
-
-                    $l_value['id'] = intval($l_value['id']);
-                    $l_value['pos_y'] = intval($l_value['pos_y']);
-                    $l_value['pos_x'] = intval($l_value['pos_x']);
-                    $l_value['sub'] = ($l_value['sub']?true:false);
-                    $l_value['crdate'] = intval($l_value['crdate']);
-                    $l_value['crdate_dif'] = get_time_difference($l_value['crdate']);
-
-                    $l_value['mp'] = intval(0);
-
-                    foreach ($f3->get('matchesplayed') as $mp_key => $mp_value) {
-                        $l_value['mp'] = intval($mp_value['anzahl']);
-                    }
-
-
-                    $listOutputUsers[] = $l_value['id'];
-                    $listOutputUsersFull[] = $l_value;
-                }
-
-                $d = array(
-                    "id" => intval($value['id']),
-                    "name" => $value['name'],
-                    "evdate" => intval($value['evdate']),
-                    "evdate_str" => dateFormat($value['evdate']),
-                    "weekday" => date("D",$value['evdate']),
-                    "hour" => date("H:i",$value['evdate']),
-                    "sunset" => getSunset($value['evdate']),
-                    "evdate_dif" => get_time_difference($value['evdate']),
-                    "description" => $value['description'],
-                    "canceled" => ($value['canceled']?true:false),
-                    "private" => ($value['private']?true:false),
-                    "min_att" => intval($value['min_att']),
-                    "max_att" => intval($value['max_att']),
-                    "location" => $value['location'],
-                    "registrations" => $listOutputUsersFull
-                );
-
-                $d = array_merge($d,@retrieveWeatherForDay($value['evdate']));
-
-                $output['events'][] = $d;
+            $output['events'][] = $d;
         }
 
         echo (json_encode($output));
-	}
+    }
 );
 
 
@@ -304,6 +397,30 @@ $f3->route('GET /groups',
         $output = array(
             'groups' => $f3->get('groups')
         );
+
+        echo (json_encode($output));
+    }
+);
+$f3->route('GET /tallies',
+    function($f3) {
+        $f3->set('tally',$f3->get('DB')->exec('
+SELECT user, SUM(goals) AS goals_total, SUM(assists) AS assists_total, COUNT(goals) AS scored_in_matches
+FROM registrations
+GROUP BY LOWER(user)
+HAVING SUM(goals) + SUM(assists) > 0
+ORDER BY SUM(goals) DESC
+        '));
+
+        $output = array(
+            'tallies' => $f3->get('tally')
+        );
+
+        $i=1;
+        foreach ($output['tallies'] as &$tally) {
+            $tally['id'] = $i;
+
+            $i++;
+        }
 
         echo (json_encode($output));
     }
@@ -378,7 +495,8 @@ $f3->route('POST /events/@id',function($f3) {
             description = "'.mres($POST->event->description).'",
             location = "'.mres($POST->event->location).'",
             private = "'.intval($POST->event->private).'",
-            canceled = "'.intval($POST->event->canceled).'"
+            canceled = "'.intval($POST->event->canceled).'",
+            score = "'.mres($POST->event->score).'"
         WHERE id = '.intval($f3->get('PARAMS.id')).'
     ');
 
@@ -535,6 +653,8 @@ $f3->route('GET /registrations/@id',
                    r.crdate,
                    r.pos_x,
                    r.pos_y,
+                   r.goals,
+                   r.assists,
                    r.sub,
                    event_id
             FROM registrations r
@@ -592,6 +712,8 @@ $f3->route('POST /registrations/@id',
         SET pos_x = '.intval($POST->registration->pos_x).',
             pos_y = '.intval($POST->registration->pos_y).',
             sub = '.($POST->registration->sub?'true':'false').',
+            goals = '.intval($POST->registration->goals).',
+            assists = '.intval($POST->registration->assists).',
             chdate = "'.time().'"
 
          WHERE id = '.intval($f3->get('PARAMS.id'))
