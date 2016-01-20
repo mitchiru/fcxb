@@ -1,14 +1,18 @@
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
+var env = EmberApp.env();
+var isProductionLikeBuild = ['production', 'staging'].indexOf(env) > -1;
+
+
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     // Add options here
       minifyCSS: {
-          enabled: true
+          enabled: isProductionLikeBuild
       },
       minifyJS: {
-          enabled: true
+          enabled: isProductionLikeBuild
       },
       sourcemaps: {
           enabled: false,
