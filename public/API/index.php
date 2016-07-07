@@ -60,6 +60,72 @@ $f3->route('GET /',
     }
 );
 
+
+$f3->route('GET /statistics',
+    function($f3) {
+        $f3->set('tue',$f3->get('DB')->exec("
+SELECT  count(LOWER(r.user)) as anzahl,
+        LOWER(r.user)  as user,
+        DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday
+
+FROM events e
+INNER JOIN registrations r
+ON e.id = r.event_id
+
+WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = 'Tue'
+AND   e.canceled = 0
+
+GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
+ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC
+LIMIT 16
+"));
+
+
+        $f3->set('fri',$f3->get('DB')->exec("
+SELECT  count(LOWER(r.user)) as anzahl,
+        LOWER(r.user) as user,
+        DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') AS weekday
+
+FROM events e
+INNER JOIN registrations r
+ON e.id = r.event_id
+
+WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = 'Fri'
+AND   e.canceled = 0
+
+GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
+ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC
+LIMIT 18
+"));
+
+        $f3->set('match',$f3->get('DB')->exec("
+SELECT  count(LOWER(r.user)) as anzahl,
+        LOWER(r.user)
+
+FROM events e
+INNER JOIN registrations r
+ON e.id = r.event_id
+
+WHERE e.score != '0:0'
+AND   e.canceled = 0
+
+GROUP BY LOWER(r.user)
+ORDER BY count(LOWER(r.user)) DESC
+LIMIT 12
+"));
+
+
+        $output = array(
+            'MATCH' => $f3->get('match'),
+            'TUE' => $f3->get('tue'),
+            'FRI' => $f3->get('fri'),
+        );
+
+        echo (json_encode($output));
+
+    }
+);
+
 $f3->route('GET /authenticate',
     function($f3) {
         header('Access-Control-Allow-Origin: *');
@@ -144,7 +210,7 @@ INNER JOIN registrations r
 ON e.id = r.event_id
 
 WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
-AND LOWER(r.user) = '".$l_value['user']."'
+AND LOWER(r.user) = '".mres($l_value['user'])."'
 
 GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
 ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC"));
@@ -223,6 +289,8 @@ $f3->route('GET /events',
 
         */
 
+
+
         $f3->set('events',$f3->get('DB')->exec('
 
         SELECT *,
@@ -247,6 +315,8 @@ $f3->route('GET /events',
         ORDER BY evdate ASC
 
         '));
+
+
 
         $eventsmerge = array();
         foreach ($f3->get('events') as $key => $value) {
@@ -297,7 +367,7 @@ $f3->route('GET /events',
     ON e.id = r.event_id
 
     WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
-    AND LOWER(r.user) = '".$l_value['user']."'
+    AND LOWER(r.user) = '".mres($l_value['user'])."'
 
     GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
     ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC"));
@@ -313,7 +383,7 @@ $f3->route('GET /events',
     ON e.id = r.event_id
 
     WHERE DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a') = '".$value['weekday']."'
-    AND LOWER(r.user) = '".$l_value['user']."'
+    AND LOWER(r.user) = '".mres($l_value['user'])."'
 
     GROUP BY LOWER(r.user)"));
 
