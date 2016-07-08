@@ -100,7 +100,7 @@ LIMIT 18
 
         $f3->set('match',$f3->get('DB')->exec("
 SELECT  count(LOWER(r.user)) as anzahl,
-        LOWER(r.user)
+        LOWER(r.user) as user
 
 FROM events e
 INNER JOIN registrations r
