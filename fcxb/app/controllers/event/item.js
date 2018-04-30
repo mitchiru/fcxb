@@ -1,14 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-    sortedList: function() {
-        return Ember.ArrayProxy.extend(Ember.SortableMixin).create({
-            sortProperties: ['crdate'],
-            sortAscending: false,
-            content: this.get('model').get('registrations')
-        });
-
-    }.property('model'),
+    sortedList: Ember.computed.sort('model.registrations', 'nameSort'),
+    nameSort: ['crdate:desc'],
 
     isEditingName: false,
     isEditingScore: false,
@@ -40,7 +34,7 @@ export default Ember.Controller.extend({
                 Ember.$('#inputAddPlayer').val("");
 
                 Ember.run.later((function() {
-                    _this.get('model').get('registrations').addObject(record);
+                    _this.get('model').get('registrations').unshiftObject(record);
                 }), 200);
 
             });
@@ -191,10 +185,13 @@ export default Ember.Controller.extend({
             Ember.$('#memberlist div.list-group-item[data-registration="'+user+'"] .row-action-goals').show();
         },
         removePlayer: function (user) {
+            console.log('user',user);
+            var _this = this;
             this.store.find('registration', user).then(function (registration) {
-                registration.deleteRecord();
-                registration.get('isDeleted');
-                registration.save();
+
+                registration.destroyRecord().then(function () {
+                  _this.store.recordForId('registration', user); // undefined
+                });
             });
         },
         removeEventConfirm: function () {

@@ -15,7 +15,7 @@ export default DS.Model.extend({
     location: DS.attr('string'),
     score: DS.attr('string'),
     hasScore: function () {
-        return (this.get('score')!='' && this.get('score')!= '0:0');
+        return (this.get('score') !== '' && this.get('score') !== '0:0');
     }.property('score'),
     registrations: DS.hasMany('registrations', {async: true}),
     weekday: DS.attr('string'),
@@ -55,7 +55,7 @@ export default DS.Model.extend({
         }
     }.property('weather_temperature'),
     google_maps_link: function () {
-        return 'https://www.google.com/maps/dir/Current+Location/'+this.get('location');
+        return 'https://maps.google.com/maps?t=m&f=d&saddr=Current+Location&daddr='+this.get('location').replace(/\s/g,'+').replace(/,/g,'+');
     }.property('location'),
     bar_width: function() {
         if (this.get("overbooked")===0) {

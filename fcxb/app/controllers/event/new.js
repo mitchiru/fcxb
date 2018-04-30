@@ -40,7 +40,6 @@ export default Ember.Controller.extend({
 
     actions: {
         useTemplate: function (template) {
-            console.log(template.get('name'))
 
             var Model = this.get('model');
 

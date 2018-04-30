@@ -11,7 +11,7 @@ if ($_SERVER['HTTP_HOST']=='trainingslist.dev') {
     ini_set('display_errors',0);
     error_reporting(E_ALL|E_STRICT);
 
-    $f3->set('DB',new DB\SQL('mysql:host=localhost;port=3306;dbname=fcxb','fcxb','fcxb' ));
+    $f3->set('DB',new DB\SQL('mysql:host=localhost;port=3306;dbname=mitchiru_fcxb','root','root' ));
     $f3->set('PATH','API/');
     header("Access-Control-Allow-Origin: http://localhost:4200");
 
@@ -55,8 +55,50 @@ $f3->route('GET /',
                 'GET API/lists',
                 'GET API/list/@id',
                 'POST API/list'
+            ),
+            'leagues' => array (
+                'GET leagues',
+                'GET leagues/1'
             )
         ));
+    }
+);
+
+
+$f3->set('leagues', (object) array(
+    'leagues' => array(
+        'league' => array (
+            'id' => 1,
+            'name' => "Kreisliga A2",
+            'url' =>'http://www.fussball.de/spieltag/kreisliga-a-2-kf-fz-kreis-berlin-kreisliga-a-herren--freizeit-betrieb-saison1617-berlin/-/spieldatum/2017-05-06/staffel/01SID3RKCG000001VS54898DVUT1ITIP-G'
+        ),
+        'landesliga' => array(
+            'id' => 2,
+            'name' => 'landesliga 2',
+            'url' => 'http://www.fussball.de/spieltag/landesliga-2-kf-fz-berlin-landesliga-herren--freizeit-betrieb-saison1617-berlin/-/spieldatum/2017-05-06/staffel/01SID3A83K000001VS54898DVUT1ITIP-G'
+        )
+    )));
+
+$f3->route('GET /leagues',
+    function($f3) {
+        echo (json_encode($f3->get('leagues')));
+    }
+);
+
+$f3->route('GET /league/@id',
+    function($f3) {
+        $json = '{"league":".fixtures-stage h2","saison":".fixtures-stage h4","clubs":[{"elem":".fixtures-league-table .club-name","club":"text"}],"club-logos":[{"elem":".fixtures-league-table .club-logo span","club-logo":"data-responsive-image"}],"ranks":[{"elem":".fixtures-league-table .column-rank","rank":"text"}],"games-played":[{"elem":".fixtures-league-table tr td:nth-of-type(4)","games-played":"text"}],"games-won":[{"elem":".fixtures-league-table tr td:nth-of-type(5)","games-won":"text"}],"games-draw":[{"elem":".fixtures-league-table tr td:nth-of-type(6)","games-draw":"text"}],"games-lost":[{"elem":".fixtures-league-table tr td:nth-of-type(7)","games-lost":"text"}],"goals":[{"elem":".fixtures-league-table tr td:nth-of-type(8)","goals":"text"}],"goals-diff":[{"elem":".fixtures-league-table tr td:nth-of-type(9)","goals-diff":"text"}],"points":[{"elem":".fixtures-league-table tr td:nth-of-type(10)","points":"text"}]}';
+
+
+        $url = 'https://www.jamapi.xyz';
+
+        /*
+        curl -X POST \
+          -F 'url=http://www.gavin.codes/' \
+          -F 'json_data={"title":"title"}' \
+          https://www.jamapi.xyz
+        */
+
     }
 );
 
@@ -79,7 +121,6 @@ GROUP BY LOWER(r.user), DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a')
 ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC
 LIMIT 16
 "));
-
 
 $f3->set('fri',$f3->get('DB')->exec("
 SELECT  count(LOWER(r.user)) as anzahl,

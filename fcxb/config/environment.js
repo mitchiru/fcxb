@@ -4,9 +4,9 @@ module.exports = function(environment) {
     var ENV = {
         modulePrefix: 'fcxb',
         environment: environment,
-        baseURL: '/',
+        rootURL: '/',
         locationType: 'auto',
-        API: 'http://test.fcxb.de/',
+        API: 'http://api.fcxb.de',
         contentSecurityPolicy: {
             //https://github.com/rwjblue/ember-cli-content-security-policy
             'default-src': "'self'",
@@ -40,7 +40,7 @@ module.exports = function(environment) {
         ENV.APP.LOG_TRANSITIONS_INTERNAL = false;
         ENV.APP.LOG_VIEW_LOOKUPS = true;
         //ENV.API = 'http://trainingslist.dev/API';
-        ENV.API = 'http://test.fcxb.de';
+        ENV.API = 'http://api.fcxb.de';
     }
     //ENV.APP.LOG_RESOLVER = true;
     //ENV.APP.LOG_ACTIVE_GENERATION = true;

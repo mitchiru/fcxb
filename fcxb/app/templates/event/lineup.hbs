@@ -10,7 +10,12 @@
 <div class="pitch">
     <div class="lineup">
         {{#each sortedList as |registration|}}
-            {{view "player" player=registration}}
+            <!-- https://timmyomahony.com/blog/making-draggable-ember-component/ -->
+            <div style="top: {{registration.pos_y}}px; left: {{registration.pos_x}}px; position: absolute;"></div>
+                {{#tglc-draggable-object content=registration overrideClass='player btn btn-info ellipsis starter ui-draggable ui-draggable-handle' dragEndAction="dragEndAction" clickedAction="clickedAction"}}
+                    {{registration.user}}
+                {{/tglc-draggable-object}}
+
         {{/each}}
     </div>
     <img src="/icons/pitch.svg">

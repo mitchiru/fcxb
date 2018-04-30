@@ -125,6 +125,12 @@ textarea.desc-textarea {
     }
 }
 
+.use-template {
+    float: left;
+    margin-right: 1em;
+    padding: 10px;
+}
+
 #itemActionButtons {
     position: absolute;
     top: 80px;
@@ -424,4 +430,11 @@ input#input-score {
 
 .event-list .ended {
     opacity: 0.2;
+}
+
+.right {
+    text-align: right;
+}
+.input-group-addon {
+    padding: 6px 0px 6px 12px;
 }
