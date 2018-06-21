@@ -299,6 +299,7 @@ ORDER BY DATE_FORMAT(FROM_UNIXTIME(e.evdate), '%a'), count(LOWER(r.user)) DESC")
                 "max_att" => intval($value['max_att']),
                 "location" => $value['location'],
                 "score" => $value['score'],
+                "specialcontent" => $value['specialcontent'],
                 "registrations" => $listOutputUsersFull
             );
 

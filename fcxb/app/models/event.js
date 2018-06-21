@@ -21,6 +21,7 @@ export default DS.Model.extend({
     weekday: DS.attr('string'),
     hour: DS.attr('string'),
     weather: DS.attr('string'),
+    specialcontent: DS.attr('string'),
     sunset: DS.attr('string'),
     weather_icon: DS.attr('string'),
     weather_wind_speed: DS.attr('number'),
@@ -47,11 +48,11 @@ export default DS.Model.extend({
         }
 
         if (this.get('weather_temperature') > seasonTemperature[1]) {
-            return '/icons/Themperature_high.png';
+            return '/favicons/Themperature_high.png';
         } else if (this.get('weather_temperature') < seasonTemperature[0]) {
-            return '/icons/Themperature_low.png';
+            return '/favicons/Themperature_low.png';
         } else {
-            return '/icons/Themperature_medium.png';
+            return '/favicons/Themperature_medium.png';
         }
     }.property('weather_temperature'),
     google_maps_link: function () {
@@ -65,7 +66,7 @@ export default DS.Model.extend({
         }
     }.property('registrations'),
     link: function () {
-        return 'http://fcxb.de/'+this.get('id');
+        return 'https://doodle.fcxb.de/'+this.get('id');
     }.property('id'),
     bar_color: function() {
         return this.get('registrations.length') >= this.get('min_att') ? 'progress-bar' : 'progress-bar progress-bar-info';

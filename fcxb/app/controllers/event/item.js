@@ -24,20 +24,21 @@ export default Ember.Controller.extend({
         addPlayer: function (user) {
             var _this = this;
 
-            var record = this.store.createRecord('registration', {
-                event: this.get('model'),
-                user: user,
-                crdate_dif: 'now',
-                crdate: Math.floor(Date.now() / 1000)
-            });
-            record.save().then(function(record) {
-                Ember.$('#inputAddPlayer').val("");
+            if (user.length > 0) {
+                var record = this.store.createRecord('registration', {
+                    event: this.get('model'),
+                    user: user,
+                    crdate_dif: 'now',
+                    crdate: Math.floor(Date.now() / 1000)
+                });
+                record.save().then(function(record) {
+                    Ember.$('#inputAddPlayer').val("");
 
-                Ember.run.later((function() {
-                    _this.get('model').get('registrations').unshiftObject(record);
-                }), 200);
-
-            });
+                    Ember.run.later((function() {
+                        _this.get('model').get('registrations').unshiftObject(record);
+                    }), 200);
+                });
+            }
         },
         startEditingName: function () {
             this.set('isEditingName',1);

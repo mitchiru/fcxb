@@ -6,8 +6,11 @@
         {{/link-to}}
         <span class="navbar-brand navbar-left ellipsis">{{model.name}}</span>
 
-        <a {{action "cancelEventConfirm" model.id}} rel="nofollow" class="navbar-brand navbar-right"><i class="mdi-notification-sms-failed"></i></a>
-        <a {{action "removeEventConfirm" model.id}} rel="nofollow" class="navbar-brand navbar-right"><i class="mdi-content-remove-circle"></i></a>
+        {{#if model.specialcontent}}
+        {{else}}
+            <a {{action "cancelEventConfirm" model.id}} rel="nofollow" class="navbar-brand navbar-right"><i class="mdi-notification-sms-failed"></i></a>
+            <a {{action "removeEventConfirm" model.id}} rel="nofollow" class="navbar-brand navbar-right"><i class="mdi-content-remove-circle"></i></a>
+        {{/if}}
     </div>
 </div>
 <div class="event-detail">
@@ -27,8 +30,11 @@
             <a {{action "cancelEvent" model.id}} rel="nofollow" class="btn btn-danger btn-raised">Yes, cancel</a>
         {{/if}}
     </div>
-    {{#link-to 'event.share' model.id class="sharebutton btn btn-fab btn-raised mdi-social-share"}}{{/link-to}}
-    {{#link-to 'event.lineup' model.id class="lineupbutton btn btn-default btn-fab btn-raised mdi-av-shuffle"}}{{/link-to}}
+    {{#if model.specialcontent}}
+    {{else}}
+        {{#link-to 'event.share' model.id class="sharebutton btn btn-fab btn-raised mdi-social-share"}}{{/link-to}}
+        {{#link-to 'event.lineup' model.id class="lineupbutton btn btn-default btn-fab btn-raised mdi-av-shuffle"}}{{/link-to}}
+    {{/if}}
     <div class="mapsubsitute">
     </div>
     {{#if model.ended}}
@@ -40,9 +46,13 @@
             {{/if}}
         </div>
     {{else}}
-        <a href="{{model.google_maps_link}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBe8eQBRIToEq9807HhAoyCb_nXB7bMCjo&center={{model.location}}&zoom=16&format=png&maptype=roadmap&style=element:geometry%7Ccolor:0xf5f5f5&style=element:labels.icon%7Cvisibility:off&style=element:labels.text.fill%7Ccolor:0x616161&style=element:labels.text.stroke%7Ccolor:0xf5f5f5&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xbdbdbd&style=feature:poi%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:poi.park%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:poi.park%7Celement:geometry.fill%7Ccolor:0xb6f4b5&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:poi.sports_complex%7Celement:geometry.fill%7Ccolor:0x434343&style=feature:road%7Celement:geometry%7Ccolor:0xffffff&style=feature:road.arterial%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:road.highway%7Celement:geometry%7Ccolor:0xdadada&style=feature:road.highway%7Celement:geometry.fill%7Ccolor:0xf4d2a4&style=feature:road.highway%7Celement:labels.text.fill%7Ccolor:0x616161&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:transit.line%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:transit.station%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:water%7Celement:geometry%7Ccolor:0xc9c9c9&style=feature:water%7Celement:geometry.fill%7Ccolor:0x6f98f4&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&size=800x360&markers=size:mid%7Ccolor:0xf44336%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
-
-
+        {{#if model.specialcontent}}
+            <div class="specialcontent">
+                {{{model.specialcontent}}}
+            </div>
+        {{else}}
+            <a href="{{model.google_maps_link}}" target="_new"><img src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBe8eQBRIToEq9807HhAoyCb_nXB7bMCjo&center={{model.location}}&zoom=16&format=png&maptype=roadmap&style=element:geometry%7Ccolor:0xf5f5f5&style=element:labels.icon%7Cvisibility:off&style=element:labels.text.fill%7Ccolor:0x616161&style=element:labels.text.stroke%7Ccolor:0xf5f5f5&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xbdbdbd&style=feature:poi%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:poi.park%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:poi.park%7Celement:geometry.fill%7Ccolor:0xb6f4b5&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:poi.sports_complex%7Celement:geometry.fill%7Ccolor:0x434343&style=feature:road%7Celement:geometry%7Ccolor:0xffffff&style=feature:road.arterial%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:road.highway%7Celement:geometry%7Ccolor:0xdadada&style=feature:road.highway%7Celement:geometry.fill%7Ccolor:0xf4d2a4&style=feature:road.highway%7Celement:labels.text.fill%7Ccolor:0x616161&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:transit.line%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:transit.station%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:water%7Celement:geometry%7Ccolor:0xc9c9c9&style=feature:water%7Celement:geometry.fill%7Ccolor:0x6f98f4&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&size=800x360&markers=size:mid%7Ccolor:0xf44336%7Clabel:1%7C{{model.location}}" class="mapimage"></a>
+        {{/if}}
     {{/if}}
 
     <div class="well" data-canceled="{{model.canceled}}">
@@ -54,7 +64,11 @@
                 <h2  {{action 'startEditingName'}}>{{model.name}}</h2>
                 {{/if}}
                 <div class="list-group-left"><p class="list-group-bellowheading"><small>{{model.evdate_str}}</small></p></div>
-                <div class="list-group-right"><p class="list-group-bellowheading"><small>{{model.evdate_dif}}</small></p></div>
+                <div class="list-group-right"><p class="list-group-bellowheading"><small>
+                    {{#if model.specialcontent}}
+                        Counting of votes
+                    {{/if}}
+                    {{model.evdate_dif}}</small></p></div>
             </div>
             <div class="detail-counter">
                 <h3><center>{{model.registrations.length}}
@@ -88,20 +102,24 @@
                 {{#if model.ended}}
                 {{else}}
                 {{#if model.weather}}
-                <table class="weather">
-                    <tr>
-                        <td class="temp_img"><img src="{{model.weather_temperature_icon}}"></td>
-                        <td class="temperature">{{model.weather_temperature}}°</td>
-                        <td><img src="{{model.weather_icon}}"></td>
-                        <td class="weatherDescription">{{model.weather}}, <br>sunset at {{model.sunset}}</td>
 
-                        <!--td class="weatherWindSpeed"><span class="wws_fig">{{model.weather_wind_speed}}</span><span class="wws_text">km/h<br>Wind</span></td>
-                        <td class="turf"><img src="/icons/artificialturf.png"></td>
-                        <td>Artificial<br>Turf</td>
-                        <td class="condIcon"><i class="mdi-action-wallet-membership"></i></td>
-                        <td>Only<br>Regulars</td-->
-                    </tr>
-                </table>
+                {{#if model.specialcontent}}
+                {{else}}
+                    <table class="weather">
+                        <tr>
+                            <td class="temp_img"><img src="{{model.weather_temperature_icon}}"></td>
+                            <td class="temperature">{{model.weather_temperature}}°</td>
+                            <td><img src="{{model.weather_icon}}"></td>
+                            <td class="weatherDescription">{{model.weather}}, <br>sunset at {{model.sunset}}</td>
+
+                            <!--td class="weatherWindSpeed"><span class="wws_fig">{{model.weather_wind_speed}}</span><span class="wws_text">km/h<br>Wind</span></td>
+                            <td class="turf"><img src="/favicons/artificialturf.png"></td>
+                            <td>Artificial<br>Turf</td>
+                            <td class="condIcon"><i class="mdi-action-wallet-membership"></i></td>
+                            <td>Only<br>Regulars</td-->
+                        </tr>
+                    </table>
+                {{/if}}
                 {{/if}}
                 {{/if}}
             </div>
@@ -176,7 +194,12 @@
                     <a {{action "removeConfirm" registration.id}} class="btn-removeConfirm btn btn-default btn-fab btn-raised mdi-navigation-check"><div class="ripple-wrapper"></div></a>
                 </div>
                 <div class="row-action-primary row-action-removed" style="display:none">
-                    <a {{action "removePlayer" registration.id}} class="btn btn-default btn-fab btn-raised mdi-content-remove-circle"><div class="ripple-wrapper"></div></a>
+                    {{#if model.specialcontent}}
+                        <!-- Can't remove when special  -->
+                        <a class="btn btn-default btn-fab btn-raised mdi-navigation-check"><div class="ripple-wrapper"></div></a>
+                    {{else}}
+                        <a {{action "removePlayer" registration.id}} class="btn btn-default btn-fab btn-raised mdi-content-remove-circle"><div class="ripple-wrapper"></div></a>
+                    {{/if}}
                 </div>
                 {{/if}}
 
@@ -186,46 +209,57 @@
                     <div class="least-content playerAddInfo">{{registration.crdate_dif}}</div>
                     <h4 class="list-group-item-heading removeConfirm" {{action "removeConfirm" registration.id}}>{{registration.user}}&nbsp;&nbsp;
                         {{#increment-for times=registration.goals }}
-                        <img src="icons/goal.png" width="20">
+                        <img src="/favicons/goal.png" width="20">
                         {{/increment-for}}
                         {{#increment-for times=registration.assists }}
-                        <img src="icons/goal.png" width="10">
+                        <img src="/favicons/goal.png" width="10">
                         {{/increment-for}}
                     </h4>
                     {{#if registration.mp}}
-                    <small class="subline playerAddInfo">{{registration.mp}} appearances on {{model.weekday}}</small>
-                    {{/if}}
-
-                    {{#if registration.goals}}
                     <small class="subline playerAddInfo">
-                        {{registration.goals}} goals today</small>
+                        {{#if model.specialcontent}}
+                            {{registration.mp}} out of 3 votes given
+                        {{else}}
+                            {{registration.mp}} appearances on {{model.weekday}}
+                        {{/if}}
+                    </small>
                     {{/if}}
 
-                    {{#if registration.goals_total}}
-                    <small class="subline playerAddInfo">{{registration.goals_total}} goals total</small>
-                    {{/if}}
+                    {{#if model.specialcontent}}
+                    {{else}}
 
-                    <div class="row-action-goals playerAddInfo">
-                        <table>
-                            <tr>
-                                <td>Goals:</td>
-                                <td>Assists:</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a {{action "removeGoal" registration.id}} class="removeGoal goalActions"><img src="icons/goals.png"><span class="goals">{{registration.goals}}</span><span class="topaction">-</span></a>
-                                    <a {{action "addGoal" registration.id}} class="addGoal goalActions"><img src="icons/goal.png"><span class="topaction">+</span></a>
-                                    <br>
-                                </td>
-                                <td>
-                                    <a {{action "removeAssist" registration.id}} class="removeGoal goalActions"><img src="icons/goals.png" width="20"><span class="goals">{{registration.assists}}</span><span class="topaction">-</span></a>
-                                    <a {{action "addAssist" registration.id}} class="addGoal goalActions"><img src="icons/goal.png" width="15"><span class="topaction">+</span></a>
-                                    <br>
-                                    <br>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                        {{#if registration.goals}}
+                        <small class="subline playerAddInfo">
+                            {{registration.goals}} goals today</small>
+                        {{/if}}
+
+                        {{#if registration.goals_total}}
+                        <small class="subline playerAddInfo">{{registration.goals_total}} goals total</small>
+                        {{/if}}
+
+                        <div class="row-action-goals playerAddInfo">
+                            <table>
+                                <tr>
+                                    <td>Goals:</td>
+                                    <td>Assists:</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a {{action "removeGoal" registration.id}} class="removeGoal goalActions"><img src="/favicons/goals.png"><span class="goals">{{registration.goals}}</span><span class="topaction">-</span></a>
+                                        <a {{action "addGoal" registration.id}} class="addGoal goalActions"><img src="/favicons/goal.png"><span class="topaction">+</span></a>
+                                        <br>
+                                    </td>
+                                    <td>
+                                        <a {{action "removeAssist" registration.id}} class="removeGoal goalActions"><img src="/favicons/goals.png" width="20"><span class="goals">{{registration.assists}}</span><span class="topaction">-</span></a>
+                                        <a {{action "addAssist" registration.id}} class="addGoal goalActions"><img src="/favicons/goal.png" width="15"><span class="topaction">+</span></a>
+                                        <br>
+                                        <br>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    {{/if}}
 
                 </div>
             </div>

@@ -313,7 +313,7 @@ body:before{
     width: 120px;
     height: 30px;
     overflow: hidden;
-    background: url(/icons/dragable-handle.png) no-repeat;
+    background: url(/favicons/dragable-handle.png) no-repeat;
     z-index: 90;
     cursor: move;
     opacity: 0.9;
@@ -437,4 +437,34 @@ input#input-score {
 }
 .input-group-addon {
     padding: 6px 0px 6px 12px;
+}
+
+.specialcontent {
+    background-color: white;
+}
+
+.specialcontent .videoWrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+}
+.specialcontent .videoWrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.specialcontent img {
+    width: 100%;
+    height: auto;
+}
+
+.specialcontent {
+    text-align: center;
+}
+.specialcontent a {
+    font-weight: bold;
 }
