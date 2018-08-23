@@ -28,10 +28,24 @@
 
             <div class="form-group">
                 <label for="inputSubject" class="col-md-2 control-label">Match on next:</label>
+                <div class="{{if model.evdate_day 'col-md-2 inactive' 'col-md-2'}}">
+                    <div class="input-group">
+                        {{tglc-select content=weekdays action=(action (mut model.weekday)) class="form-control form-control-noborder form-control-20"}}
+                    </div>
+                </div>
+                <label for="inputSubject" class="col-md-2 control-label">or specific date:</label>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        {{pikaday-input onSelection=(action 'setSpecificDay') placeholder="DD.MM.YYYY" format="DD.MM.YYYY" minDate=minDate class="form-control"}}
+                        <span class="input-group-addon"><i class="mdi-notification-event-note"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputSubject" class="col-md-2 control-label">Time &amp; Title:</label>
                 <div class="col-md-10">
                     <div class="input-group">
-                        {{tglc-select content=weekdays action=(action (mut model.weekday)) class="form-control form-control-20"}}
-                        {{input value=model.name placeholder="19:00 Training" class="form-control form-control-80"}}
+                        {{input value=model.name placeholder="19:00 Training" class="form-control"}}
                         <span class="input-group-addon"><i class="mdi-notification-event-note"></i></span>
                     </div>
                 </div>

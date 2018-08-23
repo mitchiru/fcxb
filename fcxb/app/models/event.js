@@ -3,6 +3,7 @@ import DS from 'ember-data';
 export default DS.Model.extend({
     name: DS.attr('string'),
     evdate: DS.attr('number'),
+    evdate_day: DS.attr('string'),
     evdate_str: DS.attr('string'),
     evdate_dif: DS.attr('string'),
     ended: DS.attr('boolean'),

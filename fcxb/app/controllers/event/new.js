@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
 
     weekdays: ["Mon", "Tue", "Wed","Thu","Fri","Sat","Sun"],
+    minDate: new Date(),
     isValid: function (Model) {
 
         if (Ember.isEmpty(this.get('model.location'))) {
@@ -63,6 +64,14 @@ export default Ember.Controller.extend({
         setPrivate: function () {
             var Model = this.get('model');
             Model.set('private',true);
+        },
+
+        setSpecificDay: function (val) {
+            if (val instanceof Date) {
+                this.set('model.evdate_day',moment(val).format('L'));
+            } else {
+                this.set('model.evdate_day',null);
+            }
         },
 
         save: function () {

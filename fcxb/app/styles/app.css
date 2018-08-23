@@ -110,6 +110,7 @@ textarea.desc-textarea {
     opacity: 0.6;
 }
 
+
 .form-control {
     font-size: 20px;
 }
@@ -122,6 +123,10 @@ textarea.desc-textarea {
 .form-control-80 {
     width: 78% !important;
     float: left;
+}
+
+.form-control-noborder {
+    background-image: none !important;
 }
 
 @media only screen and (max-width: 480px) {
@@ -523,4 +528,9 @@ body .form-control {
 
 .addMember {
     margin: 32px 0;
+}
+
+
+.inactive {
+    opacity: 0.3;
 }
