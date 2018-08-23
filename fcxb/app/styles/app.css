@@ -1,9 +1,13 @@
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
+    font-family: 'Abel', sans-serif;
+}
+
 html {
     max-width: 800px;
 }
 
 body {
-    background-color: #D32F2F;
+    background-color: #000;
 }
 
 .ember-application {
@@ -16,6 +20,10 @@ span.navbar-brand {
 
 span.navbar-full {
     width: 75%;
+}
+
+.navbar img.navbar-brand{
+    padding: 6px 12px 6px 18px;
 }
 
 .row-action-primary a {
@@ -34,12 +42,17 @@ span.navbar-full {
 }
 
 .row-action-removed a {
-    background-color: red !important;
+    background-color: #DB3C39 !important;
     color: white !important;
 }
 
 .mapimage {
     width: 100%;
+}
+
+.maplink {
+    display: block;
+    min-height: 180px;
 }
 
 .list-group .list-group-item-heading h2 {
@@ -188,13 +201,13 @@ body:before{
     content: " ";
     height: 20px;
     top: 0;
-    background-color: #D32F2F;
+    background-color: #000;
     position: -webkit-sticky;
     position: sticky;
 }
 
 .navbar-info.navbar{
-    background-color:#F44336 !important;
+    background-color:#333 !important;
 }
 .weather {
     margin: 15px 0 -5px;
@@ -467,4 +480,47 @@ input#input-score {
 }
 .specialcontent a {
     font-weight: bold;
+}
+
+.progress .progress-bar-info {
+    background-color: #777;
+}
+
+body .progress .progress-bar {
+    background-color: #000;
+}
+
+body .progress .progress-bar-info {
+    background-color: #777;
+}
+
+body .progress .progress-bar-danger {
+    background-color: #DB3C39;
+}
+
+
+body .form-control {
+    border: 0;
+    background-image: linear-gradient(#000,#999),linear-gradient(#000,#999);
+}
+
+
+.form-control:focus, .form-control.focus {
+    outline: none;
+    background-image: linear-gradient(#DB3C39,#DB3C39),linear-gradient(#DB3C39,#DB3C39);
+}
+
+.form-group .form-control:focus, .form-group-default .form-control:focus {
+    background-image: linear-gradient(#DB3C39,#DB3C39),linear-gradient(#DB3C39,#DB3C39);
+}
+
+
+.btn-success:not(.btn-link):not(.btn-flat) {
+    background-color: #DB3C39;
+    color: #fff;
+}
+
+
+.addMember {
+    margin: 32px 0;
 }
